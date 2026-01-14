@@ -4,6 +4,7 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
 import { validateCommand } from './cli/commands/validate.js';
+import { createCommand } from './cli/commands/create.js';
 
 const program = new Command();
 
@@ -28,6 +29,21 @@ program
       result.errors.forEach(err => {
         console.log(chalk.red(`  - ${err}`));
       });
+      process.exit(1);
+    }
+  });
+
+program
+  .command('create')
+  .description('Create a new store from config')
+  .requiredOption('-c, --config <path>', 'Path to config file')
+  .option('--access-token <token>', 'Shopify Admin API access token')
+  .option('--shop-domain <domain>', 'Shop domain (e.g., store.myshopify.com)')
+  .action(async (options) => {
+    try {
+      await createCommand(options);
+    } catch (error) {
+      console.log(chalk.red(`Error: ${(error as Error).message}`));
       process.exit(1);
     }
   });
