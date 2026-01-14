@@ -1,0 +1,5 @@
+store:
+  name: Test Store
+  email: test@example.com
+theme:
+  source: dawn

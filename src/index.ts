@@ -1,4 +1,35 @@
 // ABOUTME: Entry point for the Shopify Spinner CLI.
 // ABOUTME: Parses commands and delegates to appropriate handlers.
 
-console.log('Shopify Spinner - coming soon');
+import { Command } from 'commander';
+import chalk from 'chalk';
+import { validateCommand } from './cli/commands/validate.js';
+
+const program = new Command();
+
+program
+  .name('spinner')
+  .description('Spin up Shopify stores from YAML configs')
+  .version('0.1.0');
+
+program
+  .command('validate')
+  .description('Validate a config file without creating a store')
+  .requiredOption('-c, --config <path>', 'Path to config file')
+  .action(async (options) => {
+    console.log(chalk.blue('Validating config...'));
+
+    const result = await validateCommand(options.config);
+
+    if (result.valid) {
+      console.log(chalk.green('Config is valid'));
+    } else {
+      console.log(chalk.red('Config has errors:'));
+      result.errors.forEach(err => {
+        console.log(chalk.red(`  - ${err}`));
+      });
+      process.exit(1);
+    }
+  });
+
+program.parse();
