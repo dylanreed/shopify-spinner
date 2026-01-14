@@ -81,4 +81,27 @@ describe('StateManager', () => {
     expect(stores).toContain('store-1');
     expect(stores).toContain('store-2');
   });
+
+  it('sets step error with failed status', () => {
+    const manager = new StateManager(TEST_DIR);
+    const state = manager.initializeState('test-store', '/path/to/config.yaml');
+    manager.saveState('test-store', state);
+
+    manager.setStepError('test-store', 'products_imported', 'CSV file not found');
+
+    const loaded = manager.loadState('test-store');
+    expect(loaded?.steps.products_imported.status).toBe('failed');
+    expect(loaded?.steps.products_imported.error).toBe('CSV file not found');
+  });
+
+  it('deletes store directory', () => {
+    const manager = new StateManager(TEST_DIR);
+    const state = manager.initializeState('test-store', '/path/to/config.yaml');
+    manager.saveState('test-store', state);
+
+    manager.deleteStore('test-store');
+
+    expect(manager.loadState('test-store')).toBeNull();
+    expect(manager.listStores()).not.toContain('test-store');
+  });
 });
