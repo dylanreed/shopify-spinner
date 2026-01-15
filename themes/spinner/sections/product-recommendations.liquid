@@ -1,0 +1,24 @@
+{% comment %}
+  ABOUTME: Product recommendations section
+  ABOUTME: Shows related products below main product
+{% endcomment %}
+
+{% if recommendations.performed and recommendations.products_count > 0 %}
+<section class="product-recommendations section">
+  <div class="container">
+    <h2 class="section-title">You May Also Like</h2>
+    <div class="product-grid product-grid-classic">
+      {% for product in recommendations.products limit: 4 %}
+        {% render 'product-card', product: product %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Product Recommendations",
+  "settings": []
+}
+{% endschema %}

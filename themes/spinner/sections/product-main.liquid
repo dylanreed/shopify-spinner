@@ -1,0 +1,302 @@
+{% comment %}
+  ABOUTME: Main product section with gallery, info, and add-to-cart
+  ABOUTME: Handles variant selection and inventory display
+{% endcomment %}
+
+{% liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign featured_image = current_variant.featured_image | default: product.featured_image
+%}
+
+<section class="product-main section">
+  <div class="container">
+    <div class="product-main__grid">
+      <div class="product-main__gallery">
+        <div class="product-main__featured-image">
+          {% if featured_image != blank %}
+            <img
+              src="{{ featured_image | image_url: width: 1200 }}"
+              alt="{{ featured_image.alt | default: product.title }}"
+              loading="eager"
+              id="product-featured-image"
+            >
+          {% else %}
+            <div class="product-main__placeholder"></div>
+          {% endif %}
+        </div>
+
+        {% if product.images.size > 1 %}
+          <div class="product-main__thumbnails">
+            {% for image in product.images %}
+              <button
+                class="product-main__thumbnail {% if image == featured_image %}is-active{% endif %}"
+                data-image-url="{{ image | image_url: width: 1200 }}"
+                data-image-alt="{{ image.alt | default: product.title }}"
+              >
+                <img
+                  src="{{ image | image_url: width: 200 }}"
+                  alt="{{ image.alt | default: product.title }}"
+                  loading="lazy"
+                >
+              </button>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="product-main__info">
+        {% if product.vendor != blank %}
+          <p class="product-main__vendor">{{ product.vendor }}</p>
+        {% endif %}
+
+        <h1 class="product-main__title">{{ product.title }}</h1>
+
+        <div class="product-main__price" data-product-price>
+          {% if current_variant.compare_at_price > current_variant.price %}
+            <span class="product-main__price--compare">{{ current_variant.compare_at_price | money }}</span>
+          {% endif %}
+          <span class="product-main__price--current">{{ current_variant.price | money }}</span>
+        </div>
+
+        {% form 'product', product, data-product-form: '' %}
+          <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id>
+
+          {% unless product.has_only_default_variant %}
+            <div class="product-main__variants">
+              {% for option in product.options_with_values %}
+                <div class="product-main__option">
+                  <label for="option-{{ option.name | handleize }}">{{ option.name }}</label>
+                  <select
+                    id="option-{{ option.name | handleize }}"
+                    name="options[{{ option.name }}]"
+                    data-option-select
+                  >
+                    {% for value in option.values %}
+                      <option
+                        value="{{ value }}"
+                        {% if option.selected_value == value %}selected{% endif %}
+                      >
+                        {{ value }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
+              {% endfor %}
+            </div>
+          {% endunless %}
+
+          <div class="product-main__quantity">
+            <label for="quantity">Quantity</label>
+            <input type="number" id="quantity" name="quantity" value="1" min="1" max="99">
+          </div>
+
+          <button
+            type="submit"
+            class="btn btn-primary product-main__add-to-cart"
+            {% unless current_variant.available %}disabled{% endunless %}
+            data-add-to-cart
+          >
+            {% if current_variant.available %}
+              Add to Cart
+            {% else %}
+              Sold Out
+            {% endif %}
+          </button>
+        {% endform %}
+
+        {% if product.description != blank %}
+          <div class="product-main__description">
+            {{ product.description }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.product-main__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+.product-main__featured-image img,
+.product-main__placeholder {
+  width: 100%;
+  border-radius: var(--radius-lg);
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.product-main__placeholder {
+  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-primary) 100%);
+}
+
+.product-main__thumbnails {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.product-main__thumbnail {
+  width: 80px;
+  height: 80px;
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  cursor: pointer;
+  background: none;
+  padding: 0;
+  transition: border-color var(--transition-speed) ease;
+}
+
+.product-main__thumbnail.is-active,
+.product-main__thumbnail:hover {
+  border-color: var(--color-accent);
+}
+
+.product-main__thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.product-main__vendor {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.7;
+  margin-bottom: var(--space-xs);
+}
+
+.product-main__title {
+  font-size: 2.5rem;
+  margin-bottom: var(--space-md);
+}
+
+.product-main__price {
+  font-size: 1.5rem;
+  margin-bottom: var(--space-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.product-main__price--compare {
+  text-decoration: line-through;
+  opacity: 0.6;
+  font-size: 1.25rem;
+}
+
+.product-main__price--current {
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+.product-main__variants {
+  margin-bottom: var(--space-lg);
+}
+
+.product-main__option {
+  margin-bottom: var(--space-md);
+}
+
+.product-main__option label {
+  display: block;
+  margin-bottom: var(--space-xs);
+  font-weight: 500;
+}
+
+.product-main__option select {
+  width: 100%;
+}
+
+.product-main__quantity {
+  margin-bottom: var(--space-lg);
+}
+
+.product-main__quantity label {
+  display: block;
+  margin-bottom: var(--space-xs);
+  font-weight: 500;
+}
+
+.product-main__quantity input {
+  width: 100px;
+}
+
+.product-main__add-to-cart {
+  width: 100%;
+  padding: var(--space-md);
+  font-size: 1.125rem;
+}
+
+.product-main__add-to-cart:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.product-main__description {
+  margin-top: var(--space-xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-secondary);
+}
+
+@media (max-width: 768px) {
+  .product-main__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product-main__title {
+    font-size: 2rem;
+  }
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Thumbnail gallery
+  const thumbnails = document.querySelectorAll('.product-main__thumbnail');
+  const featuredImage = document.getElementById('product-featured-image');
+
+  thumbnails.forEach(function(thumb) {
+    thumb.addEventListener('click', function() {
+      thumbnails.forEach(t => t.classList.remove('is-active'));
+      thumb.classList.add('is-active');
+      if (featuredImage) {
+        featuredImage.src = thumb.dataset.imageUrl;
+        featuredImage.alt = thumb.dataset.imageAlt;
+      }
+    });
+  });
+
+  // Variant selection
+  const form = document.querySelector('[data-product-form]');
+  const variantIdInput = document.querySelector('[data-variant-id]');
+  const optionSelects = document.querySelectorAll('[data-option-select]');
+
+  if (form && optionSelects.length > 0) {
+    optionSelects.forEach(function(select) {
+      select.addEventListener('change', function() {
+        const selectedOptions = Array.from(optionSelects).map(s => s.value);
+        const url = new URL(window.location.href);
+        url.searchParams.set('variant', '');
+
+        // Simple redirect to let Shopify handle variant selection
+        const optionParams = selectedOptions.map((opt, i) => `option${i + 1}=${encodeURIComponent(opt)}`).join('&');
+        window.location.search = optionParams;
+      });
+    });
+  }
+});
+</script>
+
+{% schema %}
+{
+  "name": "Product Main",
+  "settings": []
+}
+{% endschema %}
