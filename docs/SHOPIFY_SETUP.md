@@ -12,7 +12,7 @@ This guide walks through setting up Spinner as a Shopify app with OAuth authenti
 1. Go to [Dev Dashboard](https://dev.shopify.com/dashboard)
 2. Click "Create app"
 3. Enter app name: "Spinner" (or your preferred name)
-4. Select "Public distribution" (we'll make it unlisted after approval)
+4. Select "/Users/nervous/Library/CloudStorage/Dropbox/Github/shopify-spinner/docs/SHOPIFY_SETUP.mdPublic distribution" (we'll make it unlisted after approval)
 
 ## Step 2: Configure App Settings
 
