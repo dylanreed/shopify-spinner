@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Honky Tonk - Spinner Theme Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg: #f5f0e6;
+      --color-bg-secondary: #ebe4d6;
+      --color-text: #3d3225;
+      --color-text-muted: #7a6f5f;
+      --color-primary: #8b4513;
+      --color-secondary: #d4c8b5;
+      --color-accent: #8b4513;
+      --font-heading: 'Playfair Display', serif;
+      --font-body: 'Source Sans 3', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.7;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    header {
+      background: var(--color-bg-secondary);
+      padding: 24px 0;
+      border-bottom: 2px solid var(--color-secondary);
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: var(--font-heading);
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      font-style: italic;
+    }
+
+    nav {
+      display: flex;
+      gap: 36px;
+    }
+
+    nav a {
+      color: var(--color-text);
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--color-primary);
+    }
+
+    .hero {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      background: linear-gradient(135deg, var(--color-bg) 0%, var(--color-bg-secondary) 100%);
+      position: relative;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%238b4513' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      width: 100%;
+    }
+
+    .hero h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(3rem, 8vw, 5rem);
+      font-weight: 700;
+      font-style: italic;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--color-text-muted);
+      max-width: 500px;
+      margin: 0 auto 32px;
+      font-style: italic;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 36px;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+      border-radius: 30px;
+    }
+
+    .btn-primary {
+      background: var(--color-primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: #6b3410;
+      transform: translateY(-2px);
+    }
+
+    .section {
+      padding: 80px 0;
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: 2.25rem;
+      font-style: italic;
+      margin-bottom: 48px;
+      text-align: center;
+      color: var(--color-primary);
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+    }
+
+    .product-card {
+      background: var(--color-bg-secondary);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 40px rgba(139,69,19,0.15);
+    }
+
+    .product-image {
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, var(--color-secondary) 0%, #c4b8a5 100%);
+    }
+
+    .product-info {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .product-title {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-style: italic;
+      margin-bottom: 8px;
+    }
+
+    .product-price {
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+
+    footer {
+      background: var(--color-bg-secondary);
+      padding: 60px 0 30px;
+      border-top: 2px solid var(--color-secondary);
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+
+    .footer-brand .logo {
+      margin-bottom: 16px;
+    }
+
+    .footer-tagline {
+      color: var(--color-text-muted);
+      font-style: italic;
+      font-size: 1.1rem;
+    }
+
+    .footer-links h4 {
+      font-family: var(--font-heading);
+      font-style: italic;
+      margin-bottom: 16px;
+      font-size: 1.1rem;
+      color: var(--color-primary);
+    }
+
+    .footer-links a {
+      display: block;
+      color: var(--color-text-muted);
+      text-decoration: none;
+      margin-bottom: 10px;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--color-primary);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid var(--color-secondary);
+      color: var(--color-text-muted);
+      font-size: 0.9rem;
+    }
+
+    .back-link {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: var(--color-bg-secondary);
+      color: var(--color-text);
+      padding: 10px 20px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      z-index: 100;
+      border: 1px solid var(--color-secondary);
+    }
+
+    .back-link:hover {
+      background: var(--color-primary);
+      color: #fff;
+      border-color: var(--color-primary);
+    }
+
+    .preset-label {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--color-primary);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-family: var(--font-heading);
+      font-size: 0.9rem;
+      font-style: italic;
+      z-index: 100;
+    }
+
+    @media (max-width: 768px) {
+      .product-grid { grid-template-columns: repeat(2, 1fr); }
+      nav { display: none; }
+      .footer-content { flex-direction: column; gap: 32px; }
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-link">&larr; All Presets</a>
+  <div class="preset-label">Honky Tonk</div>
+
+  <header>
+    <div class="container header-inner">
+      <div class="logo">Artist Name</div>
+      <nav>
+        <a href="#">Shop</a>
+        <a href="#">Tour Dates</a>
+        <a href="#">Music</a>
+        <a href="#">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Artist Name</h1>
+        <p>"Authentic country music, straight from the heart"</p>
+        <a href="#" class="btn btn-primary">Shop the Collection</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Featured Items</h2>
+      <div class="product-grid">
+        <div class="product-card">
+          <div class="product-image"></div>
+          <div class="product-info">
+            <h3 class="product-title">Vintage Tee</h3>
+            <p class="product-price">$34.99</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image"></div>
+          <div class="product-info">
+            <h3 class="product-title">Western Hat</h3>
+            <p class="product-price">$54.99</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image"></div>
+          <div class="product-info">
+            <h3 class="product-title">Tour Hoodie</h3>
+            <p class="product-price">$64.99</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image"></div>
+          <div class="product-info">
+            <h3 class="product-title">Bandana</h3>
+            <p class="product-price">$18.99</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="logo">Artist Name</div>
+          <p class="footer-tagline">"Poetry meets twang"</p>
+        </div>
+        <div class="footer-links">
+          <h4>Shop</h4>
+          <a href="#">All Products</a>
+          <a href="#">New Arrivals</a>
+          <a href="#">Best Sellers</a>
+        </div>
+        <div class="footer-links">
+          <h4>Connect</h4>
+          <a href="#">Instagram</a>
+          <a href="#">Facebook</a>
+          <a href="#">Spotify</a>
+        </div>
+        <div class="footer-links">
+          <h4>Help</h4>
+          <a href="#">Contact Us</a>
+          <a href="#">Shipping</a>
+          <a href="#">Returns</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; 2024 Artist Name. All rights reserved.
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

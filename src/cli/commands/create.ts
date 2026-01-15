@@ -134,7 +134,7 @@ export async function createCommand(options: CreateOptions): Promise<void> {
 
         if (publishResult.failed.length > 0) {
           publishResult.failed.forEach(f =>
-            console.log(chalk.yellow(`  ⚠ Failed to publish ${f.productId}: ${f.error}`))
+            console.log(chalk.yellow(`  ⚠ Failed to publish ${f.id}: ${f.error}`))
           );
         }
       }
@@ -159,6 +159,22 @@ export async function createCommand(options: CreateOptions): Promise<void> {
           stateManager.updateStep(storeName, 'collections_created', 'complete', {
             count: collectionResult.created.length,
           });
+        }
+
+        // Publish collections to Online Store
+        if (collectionResult.created.length > 0) {
+          console.log(chalk.blue('Publishing collections to Online Store...'));
+          const publicationService = new PublicationService(client);
+          const collectionIds = collectionResult.created.map(c => c.id);
+          const collectionPublishResult = await publicationService.publishCollections(collectionIds);
+
+          console.log(chalk.green(`✓ ${collectionPublishResult.published.length} collections published`));
+
+          if (collectionPublishResult.failed.length > 0) {
+            collectionPublishResult.failed.forEach(f =>
+              console.log(chalk.yellow(`  ⚠ Failed to publish collection ${f.id}: ${f.error}`))
+            );
+          }
         }
       }
     } catch (error) {

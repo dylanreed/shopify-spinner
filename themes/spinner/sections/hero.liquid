@@ -5,19 +5,32 @@
 
 {% liquid
   assign hero_style = section.settings.hero_style
+
+  # Support both image_picker (Shopify media) and image_asset (local asset file)
+  assign hero_image = section.settings.image
+  if hero_image == blank and section.settings.image_asset != blank
+    assign hero_image_asset = section.settings.image_asset | asset_url
+  endif
 %}
 
 <section class="hero hero--{{ hero_style }}">
   {% case hero_style %}
     {% when 'full-bleed' %}
       <div class="hero__media">
-        {% if section.settings.image != blank %}
+        {% if hero_image != blank %}
           <img
-            src="{{ section.settings.image | image_url: width: 1920 }}"
-            alt="{{ section.settings.image.alt | default: section.settings.heading }}"
+            src="{{ hero_image | image_url: width: 1920 }}"
+            alt="{{ hero_image.alt | default: section.settings.heading }}"
             loading="eager"
             width="1920"
-            height="{{ 1920 | divided_by: section.settings.image.aspect_ratio | round }}"
+            height="{{ 1920 | divided_by: hero_image.aspect_ratio | round }}"
+            class="hero__image"
+          >
+        {% elsif hero_image_asset %}
+          <img
+            src="{{ hero_image_asset }}"
+            alt="{{ section.settings.heading }}"
+            loading="eager"
             class="hero__image"
           >
         {% else %}
@@ -57,13 +70,20 @@
           {% endif %}
         </div>
         <div class="hero__media">
-          {% if section.settings.image != blank %}
+          {% if hero_image != blank %}
             <img
-              src="{{ section.settings.image | image_url: width: 960 }}"
-              alt="{{ section.settings.image.alt | default: section.settings.heading }}"
+              src="{{ hero_image | image_url: width: 960 }}"
+              alt="{{ hero_image.alt | default: section.settings.heading }}"
               loading="eager"
               width="960"
-              height="{{ 960 | divided_by: section.settings.image.aspect_ratio | round }}"
+              height="{{ 960 | divided_by: hero_image.aspect_ratio | round }}"
+              class="hero__image"
+            >
+          {% elsif hero_image_asset %}
+            <img
+              src="{{ hero_image_asset }}"
+              alt="{{ section.settings.heading }}"
+              loading="eager"
               class="hero__image"
             >
           {% else %}
@@ -78,13 +98,20 @@
           <video autoplay muted loop playsinline class="hero__video">
             <source src="{{ section.settings.video_url }}" type="video/mp4">
           </video>
-        {% elsif section.settings.image != blank %}
+        {% elsif hero_image != blank %}
           <img
-            src="{{ section.settings.image | image_url: width: 1920 }}"
-            alt="{{ section.settings.image.alt | default: section.settings.heading }}"
+            src="{{ hero_image | image_url: width: 1920 }}"
+            alt="{{ hero_image.alt | default: section.settings.heading }}"
             loading="eager"
             width="1920"
-            height="{{ 1920 | divided_by: section.settings.image.aspect_ratio | round }}"
+            height="{{ 1920 | divided_by: hero_image.aspect_ratio | round }}"
+            class="hero__image"
+          >
+        {% elsif hero_image_asset %}
+          <img
+            src="{{ hero_image_asset }}"
+            alt="{{ section.settings.heading }}"
+            loading="eager"
             class="hero__image"
           >
         {% else %}
@@ -246,6 +273,12 @@
       "type": "image_picker",
       "id": "image",
       "label": "Image"
+    },
+    {
+      "type": "text",
+      "id": "image_asset",
+      "label": "Image Asset",
+      "info": "Asset filename for hero image (e.g., hero-bg.png). Used when image picker is empty."
     },
     {
       "type": "url",

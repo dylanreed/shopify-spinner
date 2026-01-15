@@ -5,6 +5,7 @@ import { z } from 'zod';
 
 export const StoreSchema = z.object({
   name: z.string().min(1, 'Store name is required'),
+  shop_domain: z.string().regex(/^[a-z0-9-]+\.myshopify\.com$/, 'Must be a valid myshopify.com domain').optional(),
   email: z.string().email('Valid email is required'),
 });
 
@@ -28,7 +29,10 @@ export const ThemeContentSchema = z.object({
   hero_heading: z.string().optional(),
   hero_subheading: z.string().optional(),
   hero_button_text: z.string().optional(),
+  hero_button_link: z.string().optional(),
+  hero_image: z.string().optional(),
   tagline: z.string().optional(),
+  featured_collection: z.string().optional(),
 }).optional();
 
 export const ThemeSocialSchema = z.object({

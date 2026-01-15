@@ -117,7 +117,7 @@ describe('PublicationService', () => {
       'gid://shopify/Product/3',
     ]);
     expect(result.failed).toHaveLength(1);
-    expect(result.failed[0].productId).toBe('gid://shopify/Product/2');
+    expect(result.failed[0].id).toBe('gid://shopify/Product/2');
     expect(result.failed[0].error).toBe('Rate limited');
   });
 

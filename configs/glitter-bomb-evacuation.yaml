@@ -3,6 +3,7 @@
 
 store:
   name: Glitter Bomb Evacuation
+  shop_domain: glitter-bomb-evacuation.myshopify.com
   email: merch@glitterbomb.com
 
 theme:
@@ -15,6 +16,7 @@ theme:
       hero_heading: "Glitter Bomb Evacuation"
       hero_subheading: "Pop Explosion Tour 2024"
       tagline: "Sparkle Responsibly"
+      featured_collection: bestseller
     social:
       instagram: https://instagram.com/glitterbombevac
       tiktok: https://tiktok.com/@glitterbombevac

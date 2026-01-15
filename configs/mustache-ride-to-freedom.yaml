@@ -3,6 +3,7 @@
 
 store:
   name: Mustache Ride to Freedom
+  shop_domain: mustache-ride-to-freedom.myshopify.com
   email: merch@mustacheride.com
 
 theme:
@@ -15,6 +16,7 @@ theme:
       hero_heading: "Mustache Ride to Freedom"
       hero_subheading: "Rock & Roll Will Never Die"
       tagline: "Loud & Proud Since '82"
+      featured_collection: bestseller
     social:
       instagram: https://instagram.com/mustacherideband
       youtube: https://youtube.com/@mustacherideband

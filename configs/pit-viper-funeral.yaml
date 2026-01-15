@@ -3,6 +3,7 @@
 
 store:
   name: Pit Viper Funeral
+  shop_domain: pit-viper-funeral.myshopify.com
   email: merch@pitviperfuneral.com
 
 theme:
@@ -25,6 +26,7 @@ theme:
       hero_subheading: "Official Merch - Death Never Looked So Good"
       hero_button_text: "Shop Now"
       tagline: "Wear Your Darkness"
+      featured_collection: bestseller
 
     # Social links for footer
     social:

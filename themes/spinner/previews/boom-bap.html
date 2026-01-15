@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boom Bap - Spinner Theme Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg: #0f0f0f;
+      --color-bg-secondary: #1a1a1a;
+      --color-text: #ffffff;
+      --color-text-muted: #777777;
+      --color-primary: #00ff88;
+      --color-secondary: #252525;
+      --color-accent: #00ff88;
+      --font-heading: 'Archivo Black', sans-serif;
+      --font-body: 'Space Grotesk', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    header {
+      background: var(--color-bg);
+      padding: 20px 0;
+      border-bottom: 1px solid var(--color-secondary);
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      color: var(--color-primary);
+      text-transform: uppercase;
+    }
+
+    nav {
+      display: flex;
+      gap: 32px;
+    }
+
+    nav a {
+      color: var(--color-text);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--color-primary);
+    }
+
+    .hero {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      background: var(--color-bg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 20%;
+      right: 10%;
+      width: 300px;
+      height: 300px;
+      background: var(--color-primary);
+      opacity: 0.05;
+      border-radius: 50%;
+      filter: blur(80px);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      text-transform: uppercase;
+      line-height: 0.95;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 span {
+      color: var(--color-primary);
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--color-text-muted);
+      max-width: 450px;
+      margin-bottom: 32px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 16px 40px;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--color-primary);
+      color: var(--color-bg);
+    }
+
+    .btn-primary:hover {
+      background: #00cc6e;
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(0,255,136,0.3);
+    }
+
+    .section {
+      padding: 80px 0;
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: 2.5rem;
+      text-transform: uppercase;
+      margin-bottom: 48px;
+      text-align: center;
+    }
+
+    .section-title span {
+      color: var(--color-primary);
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .product-card {
+      background: var(--color-bg-secondary);
+      border: 1px solid var(--color-secondary);
+      transition: all 0.3s;
+    }
+
+    .product-card:hover {
+      border-color: var(--color-primary);
+      transform: translateY(-8px);
+      box-shadow: 0 0 30px rgba(0,255,136,0.1);
+    }
+
+    .product-image {
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+    }
+
+    .product-info {
+      padding: 20px;
+    }
+
+    .product-title {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .product-price {
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+
+    footer {
+      background: var(--color-bg-secondary);
+      padding: 60px 0 30px;
+      border-top: 1px solid var(--color-secondary);
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+
+    .footer-brand .logo {
+      margin-bottom: 16px;
+    }
+
+    .footer-tagline {
+      color: var(--color-text-muted);
+      font-size: 0.95rem;
+    }
+
+    .footer-links h4 {
+      font-family: var(--font-heading);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+      color: var(--color-primary);
+    }
+
+    .footer-links a {
+      display: block;
+      color: var(--color-text-muted);
+      text-decoration: none;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--color-primary);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid var(--color-secondary);
+      color: var(--color-text-muted);
+      font-size: 0.85rem;
+    }
+
+    .back-link {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: var(--color-secondary);
+      color: var(--color-text);
+      padding: 10px 20px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      z-index: 100;
+      border: 1px solid var(--color-secondary);
+    }
+
+    .back-link:hover {
+      border-color: var(--color-primary);
+      color: var(--color-primary);
+    }
+
+    .preset-label {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--color-primary);
+      color: var(--color-bg);
+      padding: 10px 20px;
+      font-family: var(--font-heading);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      z-index: 100;
+    }
+
+    @media (max-width: 768px) {
+      .product-grid { grid-template-columns: repeat(2, 1fr); }
+      nav { display: none; }
+      .footer-content { flex-direction: column; gap: 32px; }
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-link">&larr; All Presets</a>
+  <div class="preset-label">Boom Bap</div>
+
+  <header>
+    <div class="container header-inner">
+      <div class="logo">Artist Name</div>
+      <nav>
+        <a href="#">Shop</a>
+        <a href="#">Tour</a>
+        <a href="#">Music</a>
+        <a href="#">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Artist <span>Name</span></h1>
+        <p>Official merch. Premium quality. Deductions drop every Friday.</p>
+        <a href="#" class="btn btn-primary">Shop Now</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">New <span>Drops</span></h2>
+      <div class="product-grid">
+        <div class="product-card">
+          <div class="product-image"></div>
+          <div class="product-info">
+            <h3 class="product-title">Gold Logo Tee</h3>
+            <p class="product-price">$44.99</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image"></div>
+          <div class="product-info">
+            <h3 class="product-title">Penthouse Hoodie</h3>
+            <p class="product-price">$124.99</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image"></div>
+          <div class="product-info">
+            <h3 class="product-title">Crown Snapback</h3>
+            <p class="product-price">$39.99</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image"></div>
+          <div class="product-info">
+            <h3 class="product-title">Chain Pendant</h3>
+            <p class="product-price">$89.99</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="logo">Artist Name</div>
+          <p class="footer-tagline">"Write It Off"</p>
+        </div>
+        <div class="footer-links">
+          <h4>Shop</h4>
+          <a href="#">All Products</a>
+          <a href="#">New Arrivals</a>
+          <a href="#">Best Sellers</a>
+        </div>
+        <div class="footer-links">
+          <h4>Connect</h4>
+          <a href="#">Instagram</a>
+          <a href="#">Twitter</a>
+          <a href="#">Spotify</a>
+        </div>
+        <div class="footer-links">
+          <h4>Help</h4>
+          <a href="#">Contact</a>
+          <a href="#">Shipping</a>
+          <a href="#">Returns</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; 2024 Artist Name. All rights reserved.
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

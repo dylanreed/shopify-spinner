@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Garage - Spinner Theme Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Rock+Salt&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg: #ffffff;
+      --color-bg-secondary: #f5f5f5;
+      --color-text: #111111;
+      --color-text-muted: #555555;
+      --color-primary: #dc143c;
+      --color-secondary: #e0e0e0;
+      --color-accent: #dc143c;
+      --font-heading: 'Rock Salt', cursive;
+      --font-body: 'Nunito', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    header {
+      background: var(--color-text);
+      padding: 20px 0;
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      color: var(--color-bg);
+    }
+
+    nav {
+      display: flex;
+      gap: 28px;
+    }
+
+    nav a {
+      color: var(--color-bg);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--color-primary);
+    }
+
+    .hero {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      background: var(--color-bg);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image:
+        linear-gradient(90deg, var(--color-secondary) 1px, transparent 1px),
+        linear-gradient(var(--color-secondary) 1px, transparent 1px);
+      background-size: 40px 40px;
+      opacity: 0.5;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      width: 100%;
+    }
+
+    .hero h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 6vw, 4rem);
+      line-height: 1.4;
+      margin-bottom: 24px;
+      transform: rotate(-2deg);
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--color-text-muted);
+      max-width: 500px;
+      margin: 0 auto 32px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 16px 40px;
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-decoration: none;
+      transition: all 0.2s;
+      border: 3px solid var(--color-text);
+    }
+
+    .btn-primary {
+      background: var(--color-text);
+      color: var(--color-bg);
+    }
+
+    .btn-primary:hover {
+      background: var(--color-primary);
+      border-color: var(--color-primary);
+    }
+
+    .section {
+      padding: 80px 0;
+      background: var(--color-bg-secondary);
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: 1.75rem;
+      margin-bottom: 48px;
+      text-align: center;
+      transform: rotate(-1deg);
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    .product-card {
+      background: var(--color-bg);
+      border: 3px solid var(--color-text);
+      transition: all 0.2s;
+    }
+
+    .product-card:hover {
+      transform: rotate(1deg) translateY(-4px);
+      border-color: var(--color-primary);
+    }
+
+    .product-image {
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, #e8e8e8 0%, #d0d0d0 100%);
+    }
+
+    .product-info {
+      padding: 16px;
+      border-top: 3px solid var(--color-text);
+    }
+
+    .product-card:hover .product-info {
+      border-color: var(--color-primary);
+    }
+
+    .product-title {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px;
+    }
+
+    .product-price {
+      color: var(--color-primary);
+      font-weight: 700;
+    }
+
+    footer {
+      background: var(--color-text);
+      color: var(--color-bg);
+      padding: 60px 0 30px;
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 40px;
+    }
+
+    .footer-brand .logo {
+      margin-bottom: 16px;
+    }
+
+    .footer-tagline {
+      color: #888;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 0.85rem;
+    }
+
+    .footer-links h4 {
+      font-family: var(--font-heading);
+      margin-bottom: 16px;
+      font-size: 0.9rem;
+    }
+
+    .footer-links a {
+      display: block;
+      color: #888;
+      text-decoration: none;
+      margin-bottom: 10px;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--color-primary);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 30px;
+      border-top: 1px solid #333;
+      color: #666;
+      font-size: 0.85rem;
+    }
+
+    .back-link {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: var(--color-bg);
+      color: var(--color-text);
+      padding: 10px 20px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      z-index: 100;
+      border: 2px solid var(--color-text);
+    }
+
+    .back-link:hover {
+      background: var(--color-text);
+      color: var(--color-bg);
+    }
+
+    .preset-label {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--color-primary);
+      color: var(--color-bg);
+      padding: 10px 20px;
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      z-index: 100;
+    }
+
+    @media (max-width: 768px) {
+      .product-grid { grid-template-columns: repeat(2, 1fr); }
+      nav { display: none; }
+      .footer-content { flex-direction: column; gap: 32px; }
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-link">&larr; Back</a>
+  <div class="preset-label">Garage</div>
+
+  <header>
+    <div class="container header-inner">
+      <div class="logo">Band Name</div>
+      <nav>
+        <a href="#">Shop</a>
+        <a href="#">Shows</a>
+        <a href="#">Music</a>
+        <a href="#">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Band Name</h1>
+        <p>Rock & Roll Will Never Die</p>
+        <a href="#" class="btn btn-primary">Enter Store</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">New Merch</h2>
+      <div class="product-grid">
+        <div class="product-card">
+          <div class="product-image"></div>
+          <div class="product-info">
+            <h3 class="product-title">Logo Tee</h3>
+            <p class="product-price">$29.99</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image"></div>
+          <div class="product-info">
+            <h3 class="product-title">Tour Hoodie</h3>
+            <p class="product-price">$54.99</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image"></div>
+          <div class="product-info">
+            <h3 class="product-title">Patch Pack</h3>
+            <p class="product-price">$14.99</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image"></div>
+          <div class="product-info">
+            <h3 class="product-title">Vinyl LP</h3>
+            <p class="product-price">$24.99</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="logo">Band Name</div>
+          <p class="footer-tagline">Loud & Proud Since '82</p>
+        </div>
+        <div class="footer-links">
+          <h4>Shop</h4>
+          <a href="#">All Merch</a>
+          <a href="#">New Stuff</a>
+          <a href="#">Sale</a>
+        </div>
+        <div class="footer-links">
+          <h4>Connect</h4>
+          <a href="#">Instagram</a>
+          <a href="#">YouTube</a>
+          <a href="#">Spotify</a>
+        </div>
+        <div class="footer-links">
+          <h4>Info</h4>
+          <a href="#">Contact</a>
+          <a href="#">Shipping</a>
+          <a href="#">Returns</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; 2024 Band Name. Keep it loud.
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

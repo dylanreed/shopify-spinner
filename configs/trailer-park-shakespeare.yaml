@@ -3,6 +3,7 @@
 
 store:
   name: Trailer Park Shakespeare
+  shop_domain: trailer-park-shakespeare.myshopify.com
   email: merch@trailerparkshakespeare.com
 
 theme:
@@ -15,6 +16,7 @@ theme:
       hero_heading: "Trailer Park Shakespeare"
       hero_subheading: "Poetry Meets Twang"
       tagline: "To Drink or Not to Drink"
+      featured_collection: bestseller
     social:
       instagram: https://instagram.com/tpshakespeare
       spotify: https://open.spotify.com/artist/tpshakespeare

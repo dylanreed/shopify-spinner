@@ -3,6 +3,7 @@
 
 store:
   name: Banjo Crimes Unit
+  shop_domain: banjo-crimes-unit.myshopify.com
   email: merch@banjocrimes.com
 
 theme:
@@ -15,6 +16,7 @@ theme:
       hero_heading: "Banjo Crimes Unit"
       hero_subheading: "Pickin' & Grinnin' Since 2019"
       tagline: "Bluegrass with an Alibi"
+      featured_collection: bestseller
     social:
       instagram: https://instagram.com/banjocrimes
       spotify: https://open.spotify.com/artist/banjocrimes

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Front Porch - Spinner Theme Preview</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg: #f0ebe3;
+      --color-bg-secondary: #e5ddd0;
+      --color-text: #3a3530;
+      --color-text-muted: #6b6358;
+      --color-primary: #5d4e37;
+      --color-secondary: #c9bfb0;
+      --color-accent: #8b7355;
+      --font-heading: 'Lora', serif;
+      --font-body: 'Open Sans', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.7;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    header {
+      background: var(--color-bg);
+      padding: 24px 0;
+      border-bottom: 1px solid var(--color-secondary);
+    }
+
+    .header-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--color-primary);
+    }
+
+    nav {
+      display: flex;
+      gap: 36px;
+    }
+
+    nav a {
+      color: var(--color-text);
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--color-accent);
+    }
+
+    .hero {
+      min-height: 75vh;
+      display: flex;
+      align-items: center;
+      background: var(--color-bg);
+      position: relative;
+    }
+
+    .hero-content {
+      text-align: center;
+      width: 100%;
+    }
+
+    .hero h1 {
+      font-family: var(--font-heading);
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      font-weight: 600;
+      line-height: 1.3;
+      margin-bottom: 20px;
+      color: var(--color-primary);
+    }
+
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--color-text-muted);
+      max-width: 550px;
+      margin: 0 auto 32px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 32px;
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s;
+      border-radius: 4px;
+    }
+
+    .btn-primary {
+      background: var(--color-primary);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--color-accent);
+      transform: translateY(-2px);
+    }
+
+    .section {
+      padding: 70px 0;
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: 1.75rem;
+      font-weight: 600;
+      margin-bottom: 40px;
+      text-align: center;
+      color: var(--color-primary);
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 28px;
+    }
+
+    .product-card {
+      background: var(--color-bg-secondary);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 8px 30px rgba(93,78,55,0.1);
+    }
+
+    .product-image {
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, var(--color-secondary) 0%, #d4c9ba 100%);
+    }
+
+    .product-info {
+      padding: 18px;
+      text-align: center;
+    }
+
+    .product-title {
+      font-family: var(--font-heading);
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .product-price {
+      color: var(--color-accent);
+      font-weight: 600;
+    }
+
+    footer {
+      background: var(--color-bg-secondary);
+      padding: 50px 0 25px;
+      border-top: 1px solid var(--color-secondary);
+    }
+
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 35px;
+    }
+
+    .footer-brand .logo {
+      margin-bottom: 12px;
+    }
+
+    .footer-tagline {
+      color: var(--color-text-muted);
+      font-style: italic;
+    }
+
+    .footer-links h4 {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      margin-bottom: 14px;
+      font-size: 1rem;
+      color: var(--color-primary);
+    }
+
+    .footer-links a {
+      display: block;
+      color: var(--color-text-muted);
+      text-decoration: none;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--color-accent);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 25px;
+      border-top: 1px solid var(--color-secondary);
+      color: var(--color-text-muted);
+      font-size: 0.85rem;
+    }
+
+    .back-link {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background: var(--color-bg-secondary);
+      color: var(--color-text);
+      padding: 10px 20px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      z-index: 100;
+      border: 1px solid var(--color-secondary);
+    }
+
+    .back-link:hover {
+      background: var(--color-primary);
+      color: #fff;
+      border-color: var(--color-primary);
+    }
+
+    .preset-label {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: var(--color-primary);
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-family: var(--font-heading);
+      font-size: 0.85rem;
+      z-index: 100;
+    }
+
+    @media (max-width: 768px) {
+      .product-grid { grid-template-columns: repeat(2, 1fr); }
+      nav { display: none; }
+      .footer-content { flex-direction: column; gap: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <a href="index.html" class="back-link">&larr; All Presets</a>
+  <div class="preset-label">Front Porch</div>
+
+  <header>
+    <div class="container header-inner">
+      <div class="logo">Artist Name</div>
+      <nav>
+        <a href="#">Shop</a>
+        <a href="#">Shows</a>
+        <a href="#">Music</a>
+        <a href="#">Story</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1>Artist Name</h1>
+        <p>Handcrafted merchandise made with the same care we put into our music. Sustainable materials, timeless designs.</p>
+        <a href="#" class="btn btn-primary">Browse Collection</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Featured Items</h2>
+      <div class="product-grid">
+        <div class="product-card">
+          <div class="product-image"></div>
+          <div class="product-info">
+            <h3 class="product-title">Organic Cotton Tee</h3>
+            <p class="product-price">$32.99</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image"></div>
+          <div class="product-info">
+            <h3 class="product-title">Wool Beanie</h3>
+            <p class="product-price">$28.99</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image"></div>
+          <div class="product-info">
+            <h3 class="product-title">Canvas Tote</h3>
+            <p class="product-price">$24.99</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image"></div>
+          <div class="product-info">
+            <h3 class="product-title">Cozy Hoodie</h3>
+            <p class="product-price">$58.99</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <div class="logo">Artist Name</div>
+          <p class="footer-tagline">"Music from the heart, for the soul"</p>
+        </div>
+        <div class="footer-links">
+          <h4>Shop</h4>
+          <a href="#">All Products</a>
+          <a href="#">New Arrivals</a>
+          <a href="#">Sale</a>
+        </div>
+        <div class="footer-links">
+          <h4>Connect</h4>
+          <a href="#">Instagram</a>
+          <a href="#">YouTube</a>
+          <a href="#">Spotify</a>
+        </div>
+        <div class="footer-links">
+          <h4>Help</h4>
+          <a href="#">Contact</a>
+          <a href="#">Shipping</a>
+          <a href="#">Returns</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; 2024 Artist Name. Made with love.
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,102 @@
+# ABOUTME: Example config template for new store deployments
+# ABOUTME: Copy this file and fill in the values for your store
+
+# ==============================================================================
+# STORE INFO (Required)
+# ==============================================================================
+store:
+  name: ""                    # Store/artist name (used for theme naming)
+  email: ""                   # Contact email
+
+# ==============================================================================
+# THEME SETTINGS
+# ==============================================================================
+theme:
+  source: spinner
+  settings:
+    # ----------------------------------
+    # PRESET (Required - pick one)
+    # ----------------------------------
+    # penthouse   - Luxury, upscale (Oswald/Inter, dark+gold)
+    # mosh-pit    - Metal, punk (Bebas Neue/Roboto Mono, black+red)
+    # honky-tonk  - Country, folk (Playfair/Source Sans, cream+brown)
+    # neon-stage  - Pop, EDM (Poppins/Inter, white+bright)
+    # front-porch - Acoustic, indie (Lora/Open Sans, earth tones)
+    # boom-bap    - Hip-hop, rap (Archivo Black/Space Grotesk, dark+neon)
+    # garage      - Rock, DIY (Rock Salt/Nunito, black+white+red)
+    # gallery     - Art, minimal (Cormorant/Montserrat, minimal+blue)
+    preset: ""
+
+    # ----------------------------------
+    # LOGO (Required)
+    # ----------------------------------
+    logo: ../assets/logos/STORE-NAME.png   # Path relative to this config
+    logo_width: 180                         # 50-300px
+
+    # ----------------------------------
+    # OPTIONAL: Color extraction
+    # ----------------------------------
+    # extract_colors_from_logo: true       # Auto-generate palette from logo
+    # accent_override: "#ff5500"           # Override accent color
+
+    # ----------------------------------
+    # OPTIONAL: Layout overrides
+    # ----------------------------------
+    # layout_style: standard               # standard | editorial | bold
+    # navigation_style: topbar             # topbar | hamburger | sidebar
+    # animation_level: subtle              # none | subtle | dynamic
+
+    # ----------------------------------
+    # CONTENT (Required)
+    # ----------------------------------
+    content:
+      hero_heading: ""                     # Main headline (usually store name)
+      hero_subheading: ""                  # Subheadline (tour name, tagline, etc.)
+      tagline: ""                          # Footer tagline
+      featured_collection: bestseller      # Collection handle for homepage
+
+      # Optional overrides:
+      # hero_button_text: "Shop Now"       # CTA button text
+      # hero_button_link: "/collections/all"
+      # hero_image: ../assets/heroes/STORE-NAME.jpg  # Hero background image
+
+    # ----------------------------------
+    # SOCIAL LINKS (Optional - include what applies)
+    # ----------------------------------
+    social:
+      # instagram: https://instagram.com/handle
+      # twitter: https://twitter.com/handle
+      # youtube: https://youtube.com/@handle
+      # tiktok: https://tiktok.com/@handle
+      # spotify: https://open.spotify.com/artist/id
+
+# ==============================================================================
+# PRODUCTS
+# ==============================================================================
+products:
+  source: ../products/PRODUCT-FILE.csv     # Path to product CSV
+  create_collections: true                  # Create collections from tags
+
+# ==============================================================================
+# STORE SETTINGS
+# ==============================================================================
+settings:
+  currency: USD
+  timezone: America/Los_Angeles            # Or America/Chicago, America/New_York, etc.
+  shipping:
+    domestic_flat_rate: 5.99
+    free_shipping_threshold: 50
+
+# ==============================================================================
+# DEPLOYMENT CHECKLIST
+# ==============================================================================
+# [ ] Logo file exists at the path specified above
+# [ ] Hero image exists (optional): ../assets/heroes/STORE-NAME.jpg
+# [ ] Product CSV has 'bestseller' tag for featured products
+# [ ] Store is whitelisted: spinner whitelist add STORE.myshopify.com
+# [ ] OAuth completed: visit http://localhost:3000/auth?shop=STORE.myshopify.com
+#
+# Deploy commands:
+#   spinner theme list -s STORE.myshopify.com
+#   spinner theme push -s STORE.myshopify.com -c configs/THIS-FILE.yaml -t THEME-ID
+#   spinner create -c configs/THIS-FILE.yaml --shop-domain STORE.myshopify.com

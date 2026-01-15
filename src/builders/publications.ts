@@ -59,7 +59,7 @@ interface PublishResponse {
 
 interface PublishResult {
   published: string[];
-  failed: Array<{ productId: string; error: string }>;
+  failed: Array<{ id: string; error: string }>;
 }
 
 export class PublicationService {
@@ -114,6 +114,39 @@ export class PublicationService {
     productIds: string[],
     options: { rateLimitMs?: number } = {}
   ): Promise<PublishResult> {
+    return this.publishResources(productIds, options);
+  }
+
+  async publishCollection(collectionId: string): Promise<void> {
+    const publicationId = await this.getOnlineStorePublicationId();
+
+    const response = await this.client.mutate<PublishResponse>(
+      PUBLISH_TO_CHANNEL_MUTATION,
+      {
+        id: collectionId,
+        input: [{ publicationId }],
+      }
+    );
+
+    if (response.publishablePublish.userErrors.length > 0) {
+      const errors = response.publishablePublish.userErrors
+        .map((e) => e.message)
+        .join(', ');
+      throw new Error(errors);
+    }
+  }
+
+  async publishCollections(
+    collectionIds: string[],
+    options: { rateLimitMs?: number } = {}
+  ): Promise<PublishResult> {
+    return this.publishResources(collectionIds, options);
+  }
+
+  private async publishResources(
+    resourceIds: string[],
+    options: { rateLimitMs?: number } = {}
+  ): Promise<PublishResult> {
     const rateLimitMs = options.rateLimitMs ?? 250;
     const result: PublishResult = {
       published: [],
@@ -123,13 +156,28 @@ export class PublicationService {
     // Pre-fetch publication ID once
     await this.getOnlineStorePublicationId();
 
-    for (const productId of productIds) {
+    for (const resourceId of resourceIds) {
       try {
-        await this.publishProduct(productId);
-        result.published.push(productId);
+        const publicationId = await this.getOnlineStorePublicationId();
+        const response = await this.client.mutate<PublishResponse>(
+          PUBLISH_TO_CHANNEL_MUTATION,
+          {
+            id: resourceId,
+            input: [{ publicationId }],
+          }
+        );
+
+        if (response.publishablePublish.userErrors.length > 0) {
+          const errors = response.publishablePublish.userErrors
+            .map((e) => e.message)
+            .join(', ');
+          throw new Error(errors);
+        }
+
+        result.published.push(resourceId);
       } catch (error) {
         result.failed.push({
-          productId,
+          id: resourceId,
           error: (error as Error).message,
         });
       }

@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spinner Theme Previews</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, sans-serif;
+      background: #1a1a1a;
+      color: #fff;
+      padding: 40px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2.5rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+    .card {
+      background: #2a2a2a;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: translateY(-4px);
+    }
+    .card a {
+      text-decoration: none;
+      color: inherit;
+      display: block;
+    }
+    .card-preview {
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+    .card-info {
+      padding: 20px;
+    }
+    .card-title {
+      font-size: 1.25rem;
+      margin-bottom: 8px;
+    }
+    .card-desc {
+      color: #888;
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+    .card-tags {
+      margin-top: 12px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .tag {
+      background: #333;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      color: #aaa;
+    }
+
+    /* Preview backgrounds */
+    .penthouse { background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%); color: #d4af37; }
+    .mosh-pit { background: linear-gradient(135deg, #0a0a0a 0%, #1a0a0a 100%); color: #dc143c; }
+    .honky-tonk { background: linear-gradient(135deg, #f5f0e6 0%, #e8dcc8 100%); color: #8b4513; }
+    .neon-stage { background: linear-gradient(135deg, #fff 0%, #f0f0f0 100%); color: #ff1493; }
+    .front-porch { background: linear-gradient(135deg, #f0ebe3 0%, #e5ddd0 100%); color: #5d4e37; }
+    .boom-bap { background: linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%); color: #00ff88; }
+    .garage { background: linear-gradient(135deg, #fff 0%, #f5f5f5 100%); color: #dc143c; }
+    .gallery { background: linear-gradient(135deg, #fafafa 0%, #f0f0f0 100%); color: #2563eb; }
+  </style>
+</head>
+<body>
+  <h1>Spinner Theme Presets</h1>
+
+  <div class="grid">
+    <div class="card">
+      <a href="penthouse.html">
+        <div class="card-preview penthouse">PENTHOUSE</div>
+        <div class="card-info">
+          <div class="card-title">Penthouse</div>
+          <div class="card-desc">Luxury, upscale aesthetic with dark backgrounds and gold accents. Perfect for premium brands.</div>
+          <div class="card-tags">
+            <span class="tag">Oswald</span>
+            <span class="tag">Inter</span>
+            <span class="tag">Dark + Gold</span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="card">
+      <a href="mosh-pit.html">
+        <div class="card-preview mosh-pit">MOSH PIT</div>
+        <div class="card-info">
+          <div class="card-title">Mosh Pit</div>
+          <div class="card-desc">Aggressive, high-energy design with stark contrasts. Built for metal, punk, and hardcore.</div>
+          <div class="card-tags">
+            <span class="tag">Bebas Neue</span>
+            <span class="tag">Roboto Mono</span>
+            <span class="tag">Black + Red</span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="card">
+      <a href="honky-tonk.html">
+        <div class="card-preview honky-tonk">HONKY TONK</div>
+        <div class="card-info">
+          <div class="card-title">Honky Tonk</div>
+          <div class="card-desc">Warm, rustic feel with refined typography. Ideal for country, folk, and americana.</div>
+          <div class="card-tags">
+            <span class="tag">Playfair Display</span>
+            <span class="tag">Source Sans</span>
+            <span class="tag">Cream + Brown</span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="card">
+      <a href="neon-stage.html">
+        <div class="card-preview neon-stage">NEON STAGE</div>
+        <div class="card-info">
+          <div class="card-title">Neon Stage</div>
+          <div class="card-desc">Bright, energetic design with vibrant accents. Perfect for pop, EDM, and dance acts.</div>
+          <div class="card-tags">
+            <span class="tag">Poppins</span>
+            <span class="tag">Inter</span>
+            <span class="tag">White + Bright</span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="card">
+      <a href="front-porch.html">
+        <div class="card-preview front-porch">FRONT PORCH</div>
+        <div class="card-info">
+          <div class="card-title">Front Porch</div>
+          <div class="card-desc">Earthy, warm aesthetic with organic feel. Made for acoustic, indie, and singer-songwriters.</div>
+          <div class="card-tags">
+            <span class="tag">Lora</span>
+            <span class="tag">Open Sans</span>
+            <span class="tag">Earth Tones</span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="card">
+      <a href="boom-bap.html">
+        <div class="card-preview boom-bap">BOOM BAP</div>
+        <div class="card-info">
+          <div class="card-title">Boom Bap</div>
+          <div class="card-desc">Urban, bold typography with neon accents. Designed for hip-hop, rap, and urban artists.</div>
+          <div class="card-tags">
+            <span class="tag">Archivo Black</span>
+            <span class="tag">Space Grotesk</span>
+            <span class="tag">Dark + Neon</span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="card">
+      <a href="garage.html">
+        <div class="card-preview garage">GARAGE</div>
+        <div class="card-info">
+          <div class="card-title">Garage</div>
+          <div class="card-desc">Raw, DIY aesthetic with xerox punk vibes. Built for rock, garage bands, and indie acts.</div>
+          <div class="card-tags">
+            <span class="tag">Rock Salt</span>
+            <span class="tag">Nunito</span>
+            <span class="tag">B&W + Red</span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="card">
+      <a href="gallery.html">
+        <div class="card-preview gallery">GALLERY</div>
+        <div class="card-info">
+          <div class="card-title">Gallery</div>
+          <div class="card-desc">Clean, minimal design with sophisticated type. Perfect for art-focused and visual artists.</div>
+          <div class="card-tags">
+            <span class="tag">Cormorant</span>
+            <span class="tag">Montserrat</span>
+            <span class="tag">Minimal + Blue</span>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

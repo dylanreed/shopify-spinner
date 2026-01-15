@@ -3,6 +3,7 @@
 
 store:
   name: Lil' Tax Bracket
+  shop_domain: lil-tax-bracket.myshopify.com
   email: merch@liltaxbracket.com
 
 theme:
@@ -15,6 +16,7 @@ theme:
       hero_heading: "Lil' Tax Bracket"
       hero_subheading: "Deductions Drop Friday"
       tagline: "Write It Off"
+      featured_collection: bestseller
     social:
       instagram: https://instagram.com/liltaxbracket
       tiktok: https://tiktok.com/@liltaxbracket

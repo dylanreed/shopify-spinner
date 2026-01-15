@@ -107,6 +107,23 @@ export async function customizeTheme(options: CustomizeOptions): Promise<void> {
     }
   }
 
+  // Handle hero image
+  let heroImageAsset: string | undefined;
+  if (themeSettings?.content?.hero_image) {
+    const heroImagePath = resolve(dirname(configPath), themeSettings.content.hero_image);
+
+    if (existsSync(heroImagePath)) {
+      // Copy hero image to theme assets
+      const heroFilename = `hero-bg${getExtension(heroImagePath)}`;
+      const heroDestPath = join(outputPath, 'assets', heroFilename);
+      mkdirSync(dirname(heroDestPath), { recursive: true });
+      copyFileSync(heroImagePath, heroDestPath);
+      heroImageAsset = heroFilename;
+    } else {
+      console.warn(`Warning: Hero image not found at ${heroImagePath}`);
+    }
+  }
+
   // Apply logo width
   if (themeSettings?.logo_width) {
     settingsData.current.logo_width = themeSettings.logo_width;
@@ -194,6 +211,48 @@ export async function customizeTheme(options: CustomizeOptions): Promise<void> {
 
   // Write updated settings_data.json
   writeFileSync(settingsPath, JSON.stringify(settingsData, null, 2));
+
+  // Update index.json template for featured collection and hero settings
+  const indexTemplatePath = join(outputPath, 'templates', 'index.json');
+  if (existsSync(indexTemplatePath)) {
+    const indexTemplate = JSON.parse(readFileSync(indexTemplatePath, 'utf-8'));
+
+    // Update hero section
+    if (indexTemplate.sections?.hero) {
+      if (themeSettings?.content?.hero_heading) {
+        indexTemplate.sections.hero.settings.heading = themeSettings.content.hero_heading;
+      } else if (config.store.name) {
+        indexTemplate.sections.hero.settings.heading = config.store.name;
+      }
+
+      if (themeSettings?.content?.hero_subheading) {
+        indexTemplate.sections.hero.settings.subheading = themeSettings.content.hero_subheading;
+      }
+
+      if (themeSettings?.content?.hero_button_text) {
+        indexTemplate.sections.hero.settings.button_text = themeSettings.content.hero_button_text;
+      }
+
+      if (themeSettings?.content?.hero_button_link) {
+        indexTemplate.sections.hero.settings.button_link = themeSettings.content.hero_button_link;
+      } else if (themeSettings?.content?.featured_collection) {
+        // Default hero button to featured collection
+        indexTemplate.sections.hero.settings.button_link = `shopify://collections/${themeSettings.content.featured_collection}`;
+      }
+
+      // Set hero image asset if provided
+      if (heroImageAsset) {
+        indexTemplate.sections.hero.settings.image_asset = heroImageAsset;
+      }
+    }
+
+    // Update featured collection section
+    if (indexTemplate.sections?.['featured-collection'] && themeSettings?.content?.featured_collection) {
+      indexTemplate.sections['featured-collection'].settings.collection = themeSettings.content.featured_collection;
+    }
+
+    writeFileSync(indexTemplatePath, JSON.stringify(indexTemplate, null, 2));
+  }
 }
 
 function capitalizePreset(preset: string): string {

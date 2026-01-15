@@ -229,4 +229,56 @@ describe('customizer', () => {
     expect(result.current.custom_text).toBe('#eeeeee');
     expect(result.current.custom_accent).toBe('#ff6600');
   });
+
+  it('copies hero image to assets and sets image_asset in index.json', async () => {
+    // Create mock hero image
+    const heroImagePath = join(testDir, 'hero.jpg');
+    writeFileSync(heroImagePath, 'mock image content');
+
+    // Create index.json template
+    mkdirSync(join(themePath, 'templates'), { recursive: true });
+    writeFileSync(
+      join(themePath, 'templates', 'index.json'),
+      JSON.stringify({
+        sections: {
+          hero: {
+            type: 'hero',
+            settings: {
+              heading: 'Default',
+              subheading: 'Default',
+            },
+          },
+        },
+        order: ['hero'],
+      }, null, 2)
+    );
+
+    const config: StoreConfig = {
+      store: { name: 'Test Store', email: 'test@example.com' },
+      theme: {
+        source: 'spinner',
+        settings: {
+          content: {
+            hero_heading: 'My Store',
+            hero_image: 'hero.jpg',  // Relative to config path
+          },
+        },
+      },
+    };
+
+    await customizeTheme({
+      configPath: join(testDir, 'config.yaml'),
+      config,
+      themePath,
+      outputPath,
+    });
+
+    // Verify hero image was copied to assets
+    expect(existsSync(join(outputPath, 'assets', 'hero-bg.jpg'))).toBe(true);
+
+    // Verify image_asset was set in index.json
+    const indexTemplate = JSON.parse(readFileSync(join(outputPath, 'templates', 'index.json'), 'utf-8'));
+    expect(indexTemplate.sections.hero.settings.image_asset).toBe('hero-bg.jpg');
+    expect(indexTemplate.sections.hero.settings.heading).toBe('My Store');
+  });
 });

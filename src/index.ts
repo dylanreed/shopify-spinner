@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 // ABOUTME: Entry point for the Shopify Spinner CLI.
 // ABOUTME: Parses commands and delegates to appropriate handlers.
 
@@ -14,7 +15,7 @@ import {
   whitelistRemoveCommand,
   whitelistListCommand,
 } from './cli/commands/whitelist.js';
-import { themePushCommand, themeListCommand } from './cli/commands/theme.js';
+import { themePushCommand, themeListCommand, deployAllCommand } from './cli/commands/theme.js';
 
 const program = new Command();
 
@@ -110,6 +111,8 @@ themeCmd
   .requiredOption('-s, --shop <domain>', 'Shop domain (e.g., store.myshopify.com)')
   .option('-c, --config <path>', 'Config file to customize theme before pushing')
   .option('-p, --path <path>', 'Path to theme directory', './themes/spinner')
+  .option('-t, --theme <id>', 'Theme ID to push to (skips prompt)')
+  .option('-n, --name <name>', 'Theme name (defaults to store name from config)')
   .option('--unpublished', 'Push as unpublished theme')
   .action(async (options) => {
     await themePushCommand(options);
@@ -121,6 +124,20 @@ themeCmd
   .requiredOption('-s, --shop <domain>', 'Shop domain')
   .action(async (options) => {
     await themeListCommand(options.shop);
+  });
+
+themeCmd
+  .command('deploy-all')
+  .description('Deploy theme to all stores with shop_domain in their config')
+  .requiredOption('-r, --repo <url>', 'GitHub repo URL to clone theme from')
+  .option('-c, --configs <path>', 'Path to configs directory', './configs')
+  .option('--dry-run', 'Show what would be deployed without actually deploying')
+  .action(async (options) => {
+    await deployAllCommand({
+      repo: options.repo,
+      configs: options.configs,
+      dryRun: options.dryRun,
+    });
   });
 
 program.parse();
