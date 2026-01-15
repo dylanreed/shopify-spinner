@@ -1,0 +1,43 @@
+# ABOUTME: Country band merch theme - Honky Tonk Neon aesthetic.
+# ABOUTME: Roadhouse bar meets Americana signage. Welcoming, genuine, open.
+
+store:
+  name: Country Band Store
+  email: merch@example.com
+
+theme:
+  source: dawn
+  settings:
+    colors:
+      primary: "#e8542f"      # Neon beer sign orange
+      secondary: "#1c3d5a"    # Denim blue, evening sky
+      background: "#faf6f1"   # Sun-bleached wood
+      accent: "#f4d03f"       # Stage light gold
+      text: "#2a2118"         # Saddle leather brown
+    typography:
+      heading_font: Bebas Neue       # Highway sign bold, unapologetic
+      body_font: Source Serif Pro    # Readable, honest, no pretense
+    vibe:
+      name: Honky Tonk Neon
+      palette_name: Last Call Glow
+      density: sparse
+      motion: moderate
+      shapes: mixed
+
+settings:
+  currency: USD
+  timezone: America/Chicago
+  checkout:
+    require_phone: false
+    enable_tips: true
+  shipping:
+    domestic_flat_rate: 5.99
+    free_shipping_threshold: 50
+
+# Theme notes for manual customization:
+# - Full-width image bands like driving through landscapes
+# - Slide-in from sides animation (like swinging saloon doors)
+# - Worn/distressed edge treatment on cards and images
+# - Open, spacious layout with big sky energy
+# - Mix of sharp signage shapes and worn-rounded furniture edges
+# - Genuine, straightforward aesthetic that shakes your hand firm

@@ -2856,3 +2856,821 @@ This implementation plan covers the MVP for Shopify Spinner:
 **Estimated commits**: 13
 **Estimated test files**: 8
 **Estimated source files**: 15+
+
+---
+
+# Phase 2: Headless Multi-Store Architecture
+
+> **Context**: See `docs/multi-store-architecture.md` for the full research on why headless is the recommended approach for scaling to 6+ stores/month with subdomain-based architecture.
+
+## Overview
+
+This phase adds headless frontend scaffolding to spinner, enabling a single Shopify backend to power unlimited `<act>.mydomain.com` storefronts.
+
+**Architecture:**
+```
+                    ┌─────────────────┐
+                    │  Single Shopify │
+                    │    Backend      │
+                    └────────┬────────┘
+                             │
+                      Storefront API
+                             │
+        ┌────────────┬───────┼───────┬────────────┐
+        ▼            ▼       ▼       ▼            ▼
+   act1.site    act2.site  act3.site  ...    actN.site
+```
+
+---
+
+## Task 14: Act Config Schema Extension
+
+**Files:**
+- Modify: `src/config/schema.ts`
+- Modify: `src/config/schema.test.ts`
+
+**Step 1: Add act schema to config**
+
+```typescript
+// Add to src/config/schema.ts
+
+export const ActSchema = z.object({
+  name: z.string().min(1, 'Act name is required'),
+  subdomain: z.string().min(1, 'Subdomain is required'),
+  tag_prefix: z.string().optional(),
+}).optional();
+
+export const FrontendSchema = z.object({
+  template: z.enum(['hydrogen', 'nextjs', 'custom']).default('hydrogen'),
+  deploy_target: z.enum(['vercel', 'netlify', 'manual']).default('vercel'),
+  theme: z.object({
+    colors: z.object({
+      primary: z.string().optional(),
+      secondary: z.string().optional(),
+      background: z.string().optional(),
+    }).optional(),
+    fonts: z.object({
+      heading: z.string().optional(),
+      body: z.string().optional(),
+    }).optional(),
+  }).optional(),
+}).optional();
+
+// Update StoreConfigSchema to include:
+export const StoreConfigSchema = z.object({
+  extends: z.string().optional(),
+  store: StoreSchema,
+  theme: ThemeSchema,
+  apps: z.array(AppSchema).optional(),
+  settings: SettingsSchema,
+  products: ProductsSchema,
+  act: ActSchema,           // NEW
+  frontend: FrontendSchema, // NEW
+});
+```
+
+**Step 2: Add tests for act config**
+
+```typescript
+// Add to src/config/schema.test.ts
+
+describe('Act config validation', () => {
+  it('validates act config with subdomain', () => {
+    const config = {
+      store: {
+        name: 'Main Store',
+        email: 'main@test.com',
+      },
+      act: {
+        name: 'summer-drop',
+        subdomain: 'summer.mydomain.com',
+      },
+      frontend: {
+        template: 'hydrogen',
+        deploy_target: 'vercel',
+      },
+    };
+
+    const result = StoreConfigSchema.safeParse(config);
+    expect(result.success).toBe(true);
+  });
+
+  it('auto-generates tag prefix from act name', () => {
+    const config = {
+      store: {
+        name: 'Main Store',
+        email: 'main@test.com',
+      },
+      act: {
+        name: 'summer-drop',
+        subdomain: 'summer.mydomain.com',
+      },
+    };
+
+    const result = StoreConfigSchema.safeParse(config);
+    expect(result.success).toBe(true);
+  });
+});
+```
+
+**Step 3: Run tests**
+
+Run: `npm test`
+Expected: PASS - all tests pass
+
+**Step 4: Commit**
+
+```bash
+git add -A
+git commit -m "feat: add act and frontend config schema for headless architecture"
+```
+
+---
+
+## Task 15: Product Tagging for Acts
+
+**Files:**
+- Modify: `src/builders/products.ts`
+- Modify: `src/builders/products.test.ts`
+
+**Step 1: Add act tag injection to product builder**
+
+```typescript
+// Modify src/builders/products.ts
+
+export class ProductBuilder {
+  private client: ShopifyClient;
+  private actTagPrefix?: string;
+
+  constructor(client: ShopifyClient, actTagPrefix?: string) {
+    this.client = client;
+    this.actTagPrefix = actTagPrefix;
+  }
+
+  buildProductInput(product: Product): ProductInput {
+    const tags = [...product.tags];
+
+    // Inject act tag if configured
+    if (this.actTagPrefix) {
+      tags.push(this.actTagPrefix);
+    }
+
+    return {
+      title: product.title,
+      descriptionHtml: product.description,
+      vendor: product.vendor,
+      productType: product.type,
+      tags,
+      handle: product.handle,
+    };
+  }
+
+  // ... rest of class
+}
+```
+
+**Step 2: Add tests for act tagging**
+
+```typescript
+// Add to src/builders/products.test.ts
+
+describe('Product act tagging', () => {
+  it('injects act tag prefix into product tags', () => {
+    const builder = new ProductBuilder(mockClient, 'act:summer-drop');
+
+    const product: Product = {
+      handle: 'test-tee',
+      title: 'Test T-Shirt',
+      description: '',
+      vendor: '',
+      type: '',
+      tags: ['cotton', 'basics'],
+      variants: [],
+    };
+
+    const input = builder.buildProductInput(product);
+
+    expect(input.tags).toContain('act:summer-drop');
+    expect(input.tags).toContain('cotton');
+    expect(input.tags).toContain('basics');
+  });
+
+  it('works without act tag prefix', () => {
+    const builder = new ProductBuilder(mockClient);
+
+    const product: Product = {
+      handle: 'test-tee',
+      title: 'Test T-Shirt',
+      description: '',
+      vendor: '',
+      type: '',
+      tags: ['cotton'],
+      variants: [],
+    };
+
+    const input = builder.buildProductInput(product);
+
+    expect(input.tags).toEqual(['cotton']);
+  });
+});
+```
+
+**Step 3: Run tests**
+
+Run: `npm test`
+Expected: PASS - all tests pass
+
+**Step 4: Commit**
+
+```bash
+git add -A
+git commit -m "feat: add act tag injection to product builder"
+```
+
+---
+
+## Task 16: Frontend Template Generator
+
+**Files:**
+- Create: `src/frontend/generator.ts`
+- Create: `src/frontend/generator.test.ts`
+- Create: `src/frontend/templates/hydrogen/`
+
+**Step 1: Create frontend generator**
+
+```typescript
+// src/frontend/generator.ts
+// ABOUTME: Generates headless frontend projects from templates.
+// ABOUTME: Supports Hydrogen and Next.js with Storefront API integration.
+
+import { existsSync, mkdirSync, writeFileSync, readFileSync, readdirSync, statSync } from 'fs';
+import { join, dirname } from 'path';
+
+interface FrontendConfig {
+  actName: string;
+  subdomain: string;
+  storefrontAccessToken: string;
+  shopDomain: string;
+  tagFilter: string;
+  theme?: {
+    colors?: {
+      primary?: string;
+      secondary?: string;
+      background?: string;
+    };
+    fonts?: {
+      heading?: string;
+      body?: string;
+    };
+  };
+}
+
+interface GeneratorResult {
+  outputDir: string;
+  files: string[];
+  deployConfig?: Record<string, unknown>;
+}
+
+export class FrontendGenerator {
+  private templatesDir: string;
+
+  constructor(templatesDir?: string) {
+    this.templatesDir = templatesDir || join(dirname(import.meta.url.replace('file://', '')), 'templates');
+  }
+
+  async generateHydrogen(config: FrontendConfig, outputDir: string): Promise<GeneratorResult> {
+    mkdirSync(outputDir, { recursive: true });
+
+    const files: string[] = [];
+
+    // Generate env file
+    const envContent = this.generateEnvFile(config);
+    const envPath = join(outputDir, '.env');
+    writeFileSync(envPath, envContent);
+    files.push('.env');
+
+    // Generate storefront config
+    const storefrontConfig = this.generateStorefrontConfig(config);
+    const configPath = join(outputDir, 'storefront.config.ts');
+    writeFileSync(configPath, storefrontConfig);
+    files.push('storefront.config.ts');
+
+    // Generate product filter hook
+    const filterHook = this.generateProductFilterHook(config);
+    const hookPath = join(outputDir, 'app/hooks/useActProducts.ts');
+    mkdirSync(dirname(hookPath), { recursive: true });
+    writeFileSync(hookPath, filterHook);
+    files.push('app/hooks/useActProducts.ts');
+
+    // Generate theme variables
+    const themeVars = this.generateThemeVariables(config);
+    const themePath = join(outputDir, 'app/styles/theme.css');
+    mkdirSync(dirname(themePath), { recursive: true });
+    writeFileSync(themePath, themeVars);
+    files.push('app/styles/theme.css');
+
+    // Generate Vercel config
+    const vercelConfig = this.generateVercelConfig(config);
+    const vercelPath = join(outputDir, 'vercel.json');
+    writeFileSync(vercelPath, JSON.stringify(vercelConfig, null, 2));
+    files.push('vercel.json');
+
+    return {
+      outputDir,
+      files,
+      deployConfig: vercelConfig,
+    };
+  }
+
+  private generateEnvFile(config: FrontendConfig): string {
+    return `# Generated by Shopify Spinner
+# Act: ${config.actName}
+
+PUBLIC_STOREFRONT_API_TOKEN=${config.storefrontAccessToken}
+PUBLIC_STORE_DOMAIN=${config.shopDomain}
+PUBLIC_ACT_TAG_FILTER=${config.tagFilter}
+`;
+  }
+
+  private generateStorefrontConfig(config: FrontendConfig): string {
+    return `// ABOUTME: Storefront API configuration for ${config.actName}
+// ABOUTME: Auto-generated by Shopify Spinner
+
+export const storefrontConfig = {
+  storeDomain: '${config.shopDomain}',
+  storefrontAccessToken: process.env.PUBLIC_STOREFRONT_API_TOKEN!,
+  actTagFilter: '${config.tagFilter}',
+};
+`;
+  }
+
+  private generateProductFilterHook(config: FrontendConfig): string {
+    return `// ABOUTME: Hook to filter products by act tag.
+// ABOUTME: Ensures this storefront only shows products tagged for this act.
+
+import { useMemo } from 'react';
+
+const ACT_TAG = '${config.tagFilter}';
+
+export function useActProducts<T extends { tags?: string[] }>(products: T[]): T[] {
+  return useMemo(() => {
+    return products.filter(product =>
+      product.tags?.includes(ACT_TAG)
+    );
+  }, [products]);
+}
+
+export function buildActProductQuery(): string {
+  return \`tag:\${ACT_TAG}\`;
+}
+`;
+  }
+
+  private generateThemeVariables(config: FrontendConfig): string {
+    const primary = config.theme?.colors?.primary || '#000000';
+    const secondary = config.theme?.colors?.secondary || '#666666';
+    const background = config.theme?.colors?.background || '#ffffff';
+    const headingFont = config.theme?.fonts?.heading || 'system-ui';
+    const bodyFont = config.theme?.fonts?.body || 'system-ui';
+
+    return `/* ABOUTME: Theme variables for ${config.actName} */
+/* ABOUTME: Auto-generated by Shopify Spinner */
+
+:root {
+  --color-primary: ${primary};
+  --color-secondary: ${secondary};
+  --color-background: ${background};
+  --font-heading: ${headingFont}, system-ui, sans-serif;
+  --font-body: ${bodyFont}, system-ui, sans-serif;
+}
+`;
+  }
+
+  private generateVercelConfig(config: FrontendConfig): Record<string, unknown> {
+    return {
+      name: config.actName,
+      alias: [config.subdomain],
+      env: {
+        PUBLIC_STOREFRONT_API_TOKEN: '@storefront-token',
+        PUBLIC_STORE_DOMAIN: config.shopDomain,
+        PUBLIC_ACT_TAG_FILTER: config.tagFilter,
+      },
+    };
+  }
+}
+```
+
+**Step 2: Add tests**
+
+```typescript
+// src/frontend/generator.test.ts
+// ABOUTME: Tests for frontend project generation.
+// ABOUTME: Verifies file generation and config output.
+
+import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { FrontendGenerator } from './generator.js';
+import { existsSync, readFileSync, rmSync, mkdirSync } from 'fs';
+import { join } from 'path';
+
+const TEST_DIR = '/tmp/spinner-test-frontend';
+
+describe('FrontendGenerator', () => {
+  beforeEach(() => {
+    mkdirSync(TEST_DIR, { recursive: true });
+  });
+
+  afterEach(() => {
+    rmSync(TEST_DIR, { recursive: true, force: true });
+  });
+
+  it('generates Hydrogen project files', async () => {
+    const generator = new FrontendGenerator();
+
+    const result = await generator.generateHydrogen({
+      actName: 'summer-drop',
+      subdomain: 'summer.mydomain.com',
+      storefrontAccessToken: 'test-token',
+      shopDomain: 'main-store.myshopify.com',
+      tagFilter: 'act:summer-drop',
+      theme: {
+        colors: {
+          primary: '#FFD700',
+        },
+      },
+    }, join(TEST_DIR, 'summer-drop'));
+
+    expect(result.files).toContain('.env');
+    expect(result.files).toContain('storefront.config.ts');
+    expect(result.files).toContain('vercel.json');
+
+    const envContent = readFileSync(join(TEST_DIR, 'summer-drop', '.env'), 'utf-8');
+    expect(envContent).toContain('test-token');
+    expect(envContent).toContain('act:summer-drop');
+  });
+
+  it('generates theme CSS with custom colors', async () => {
+    const generator = new FrontendGenerator();
+
+    await generator.generateHydrogen({
+      actName: 'winter-sale',
+      subdomain: 'winter.mydomain.com',
+      storefrontAccessToken: 'token',
+      shopDomain: 'store.myshopify.com',
+      tagFilter: 'act:winter-sale',
+      theme: {
+        colors: {
+          primary: '#0066FF',
+          secondary: '#003399',
+        },
+      },
+    }, join(TEST_DIR, 'winter'));
+
+    const themeContent = readFileSync(join(TEST_DIR, 'winter', 'app/styles/theme.css'), 'utf-8');
+    expect(themeContent).toContain('--color-primary: #0066FF');
+    expect(themeContent).toContain('--color-secondary: #003399');
+  });
+
+  it('generates Vercel config with subdomain alias', async () => {
+    const generator = new FrontendGenerator();
+
+    const result = await generator.generateHydrogen({
+      actName: 'promo',
+      subdomain: 'promo.mydomain.com',
+      storefrontAccessToken: 'token',
+      shopDomain: 'store.myshopify.com',
+      tagFilter: 'act:promo',
+    }, join(TEST_DIR, 'promo'));
+
+    expect(result.deployConfig?.alias).toContain('promo.mydomain.com');
+  });
+});
+```
+
+**Step 3: Run tests**
+
+Run: `npm test`
+Expected: PASS - all tests pass
+
+**Step 4: Commit**
+
+```bash
+git add -A
+git commit -m "feat: add frontend generator for headless storefronts"
+```
+
+---
+
+## Task 17: Frontend CLI Command
+
+**Files:**
+- Create: `src/cli/commands/frontend.ts`
+- Modify: `src/index.ts`
+
+**Step 1: Implement frontend command**
+
+```typescript
+// src/cli/commands/frontend.ts
+// ABOUTME: CLI command to generate headless frontend for an act.
+// ABOUTME: Creates project scaffolding with Storefront API integration.
+
+import chalk from 'chalk';
+import { resolve } from 'path';
+import { parseConfigFile } from '../../config/parser.js';
+import { FrontendGenerator } from '../../frontend/generator.js';
+
+interface FrontendOptions {
+  config: string;
+  output?: string;
+  storefrontToken?: string;
+}
+
+export async function frontendCommand(options: FrontendOptions): Promise<void> {
+  const configPath = resolve(options.config);
+
+  console.log(chalk.blue('Loading config...'));
+  const config = await parseConfigFile(configPath);
+
+  if (!config.act) {
+    console.log(chalk.red('Error: Config must include an "act" section for frontend generation.'));
+    console.log(chalk.gray('Example:'));
+    console.log(chalk.gray(`
+act:
+  name: summer-drop
+  subdomain: summer.mydomain.com
+
+frontend:
+  template: hydrogen
+  deploy_target: vercel
+`));
+    process.exit(1);
+  }
+
+  const storefrontToken = options.storefrontToken || process.env.SHOPIFY_STOREFRONT_TOKEN;
+
+  if (!storefrontToken) {
+    console.log(chalk.red('Error: Storefront API token required.'));
+    console.log(chalk.gray('Provide via --storefront-token or SHOPIFY_STOREFRONT_TOKEN env var.'));
+    process.exit(1);
+  }
+
+  const shopDomain = process.env.SHOPIFY_SHOP_DOMAIN;
+  if (!shopDomain) {
+    console.log(chalk.red('Error: SHOPIFY_SHOP_DOMAIN environment variable required.'));
+    process.exit(1);
+  }
+
+  const outputDir = options.output || resolve(process.cwd(), 'frontends', config.act.name);
+  const tagFilter = config.act.tag_prefix || `act:${config.act.name}`;
+
+  console.log(chalk.blue(`Generating frontend for act: ${config.act.name}`));
+
+  const generator = new FrontendGenerator();
+  const result = await generator.generateHydrogen({
+    actName: config.act.name,
+    subdomain: config.act.subdomain,
+    storefrontAccessToken: storefrontToken,
+    shopDomain,
+    tagFilter,
+    theme: config.frontend?.theme,
+  }, outputDir);
+
+  console.log(chalk.green(`\n✓ Frontend generated at: ${result.outputDir}`));
+  console.log(chalk.blue('\nGenerated files:'));
+  result.files.forEach(f => console.log(chalk.gray(`  - ${f}`)));
+
+  console.log(chalk.blue('\nNext steps:'));
+  console.log(chalk.gray('  1. cd ' + result.outputDir));
+  console.log(chalk.gray('  2. npm create @shopify/hydrogen@latest -- --template demo-store'));
+  console.log(chalk.gray('  3. Copy generated files into the Hydrogen project'));
+  console.log(chalk.gray('  4. vercel deploy --prod'));
+}
+```
+
+**Step 2: Add to CLI**
+
+```typescript
+// Add to src/index.ts
+
+import { frontendCommand } from './cli/commands/frontend.js';
+
+program
+  .command('frontend')
+  .description('Generate headless frontend for an act')
+  .requiredOption('-c, --config <path>', 'Path to config file with act definition')
+  .option('-o, --output <path>', 'Output directory for generated frontend')
+  .option('--storefront-token <token>', 'Shopify Storefront API token')
+  .action(async (options) => {
+    try {
+      await frontendCommand(options);
+    } catch (error) {
+      console.log(chalk.red(`Error: ${(error as Error).message}`));
+      process.exit(1);
+    }
+  });
+```
+
+**Step 3: Test manually**
+
+Create test act config:
+```bash
+cat > /tmp/test-act.yaml << 'EOF'
+store:
+  name: Main Store
+  email: main@test.com
+
+act:
+  name: summer-drop
+  subdomain: summer.mydomain.com
+
+frontend:
+  template: hydrogen
+  theme:
+    colors:
+      primary: "#FFD700"
+EOF
+```
+
+Run: `SHOPIFY_SHOP_DOMAIN=test.myshopify.com npm run spinner frontend --config /tmp/test-act.yaml --storefront-token fake-token`
+
+**Step 4: Commit**
+
+```bash
+git add -A
+git commit -m "feat: add frontend command for headless act generation"
+```
+
+---
+
+## Task 18: Storefront Token Management
+
+**Files:**
+- Create: `src/shopify/storefront.ts`
+- Create: `src/shopify/storefront.test.ts`
+
+**Step 1: Implement Storefront API client**
+
+```typescript
+// src/shopify/storefront.ts
+// ABOUTME: Shopify Storefront API client for headless frontends.
+// ABOUTME: Handles public API queries for products filtered by act tag.
+
+const STOREFRONT_API_VERSION = '2025-01';
+
+interface StorefrontCredentials {
+  storefrontAccessToken: string;
+  shopDomain: string;
+}
+
+interface ProductNode {
+  id: string;
+  title: string;
+  handle: string;
+  tags: string[];
+}
+
+interface ProductsResponse {
+  products: {
+    nodes: ProductNode[];
+  };
+}
+
+export class StorefrontClient {
+  private credentials: StorefrontCredentials;
+  private apiUrl: string;
+
+  constructor(credentials: StorefrontCredentials) {
+    this.credentials = credentials;
+    this.apiUrl = `https://${credentials.shopDomain}/api/${STOREFRONT_API_VERSION}/graphql.json`;
+  }
+
+  getHeaders(): Record<string, string> {
+    return {
+      'X-Shopify-Storefront-Access-Token': this.credentials.storefrontAccessToken,
+      'Content-Type': 'application/json',
+    };
+  }
+
+  async query<T>(query: string, variables?: Record<string, unknown>): Promise<T> {
+    const response = await fetch(this.apiUrl, {
+      method: 'POST',
+      headers: this.getHeaders(),
+      body: JSON.stringify({ query, variables }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Storefront API error: ${response.status}`);
+    }
+
+    const json = await response.json();
+
+    if (json.errors) {
+      throw new Error(`GraphQL errors: ${json.errors.map((e: {message: string}) => e.message).join(', ')}`);
+    }
+
+    return json.data;
+  }
+
+  async getProductsByTag(tag: string, first = 50): Promise<ProductNode[]> {
+    const query = `
+      query ProductsByTag($query: String!, $first: Int!) {
+        products(first: $first, query: $query) {
+          nodes {
+            id
+            title
+            handle
+            tags
+          }
+        }
+      }
+    `;
+
+    const response = await this.query<ProductsResponse>(query, {
+      query: `tag:${tag}`,
+      first,
+    });
+
+    return response.products.nodes;
+  }
+}
+```
+
+**Step 2: Add tests**
+
+```typescript
+// src/shopify/storefront.test.ts
+// ABOUTME: Tests for Storefront API client.
+// ABOUTME: Verifies query building and header configuration.
+
+import { describe, it, expect } from 'vitest';
+import { StorefrontClient } from './storefront.js';
+
+describe('StorefrontClient', () => {
+  it('constructs with credentials', () => {
+    const client = new StorefrontClient({
+      storefrontAccessToken: 'test-token',
+      shopDomain: 'test-store.myshopify.com',
+    });
+
+    expect(client).toBeDefined();
+  });
+
+  it('includes storefront token in headers', () => {
+    const client = new StorefrontClient({
+      storefrontAccessToken: 'sf-token',
+      shopDomain: 'test-store.myshopify.com',
+    });
+
+    const headers = client.getHeaders();
+    expect(headers['X-Shopify-Storefront-Access-Token']).toBe('sf-token');
+  });
+});
+```
+
+**Step 3: Run tests**
+
+Run: `npm test`
+Expected: PASS - all tests pass
+
+**Step 4: Commit**
+
+```bash
+git add -A
+git commit -m "feat: add Storefront API client for headless frontends"
+```
+
+---
+
+## Phase 2 Summary
+
+Tasks 14-18 add headless multi-store support:
+
+| Task | Feature |
+|------|---------|
+| 14 | Act and frontend config schema |
+| 15 | Product tagging by act |
+| 16 | Frontend project generator |
+| 17 | `spinner frontend` CLI command |
+| 18 | Storefront API client |
+
+**New workflow:**
+
+```bash
+# 1. Create main store with all products (existing flow)
+spinner create --config ./configs/main.yaml \
+  --access-token $TOKEN \
+  --shop-domain main.myshopify.com
+
+# 2. Generate frontend for an act
+spinner frontend --config ./configs/summer-act.yaml \
+  --storefront-token $SF_TOKEN
+
+# 3. Deploy to subdomain
+cd frontends/summer-drop && vercel deploy --prod
+```
+
+**Cost comparison at 72 stores:**
+| Approach | Monthly Cost |
+|----------|--------------|
+| Separate stores | $2,088 |
+| Shopify Plus | $17,500 |
+| Headless (this) | ~$29-99 + hosting |

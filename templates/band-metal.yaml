@@ -1,0 +1,42 @@
+# ABOUTME: Metal band merch theme - Cathedral Collapse aesthetic.
+# ABOUTME: Gothic architecture meets industrial machinery. Dark, powerful, ominous.
+
+store:
+  name: Metal Band Store
+  email: merch@example.com
+
+theme:
+  source: dawn
+  settings:
+    colors:
+      primary: "#8b0000"      # Dried blood, altar cloth
+      secondary: "#1a1a1a"    # Charred stone
+      background: "#050505"   # Cathedral shadow
+      accent: "#8b0000"       # Blood red accents
+      text: "#c9c9c9"         # Bone white, weathered marble
+    typography:
+      heading_font: Cinzel Decorative  # Carved into stone, ecclesiastical
+      body_font: Rajdhani              # Industrial edges, mechanical
+    vibe:
+      name: Cathedral Collapse
+      palette_name: Consecrated Ruin
+      density: dense
+      motion: subtle
+      shapes: sharp
+
+settings:
+  currency: USD
+  timezone: America/Los_Angeles
+  checkout:
+    require_phone: false
+    enable_tips: false
+  shipping:
+    domestic_flat_rate: 7.99
+    free_shipping_threshold: 75
+
+# Theme notes for manual customization:
+# - Use vertical columns like cathedral pillars to divide content
+# - Elements should emerge from shadow (opacity reveals)
+# - Add cracked stone/concrete texture on hover states
+# - Pointed arches and broken geometries throughout
+# - Heavy, oppressive feel with deliberate negative space

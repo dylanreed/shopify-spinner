@@ -1,0 +1,43 @@
+# ABOUTME: Pop band merch theme - Arcade Overflow aesthetic.
+# ABOUTME: Tokyo arcade at midnight meets fashion runway. Energized, bold, kinetic.
+
+store:
+  name: Pop Band Store
+  email: merch@example.com
+
+theme:
+  source: dawn
+  settings:
+    colors:
+      primary: "#ff2d95"      # Arcade cabinet pink, demanding attention
+      secondary: "#00f0ff"    # Screen glow cyan
+      background: "#0d0d0d"   # Between-machines darkness
+      accent: "#ffe600"       # Prize ticket yellow
+      text: "#ffffff"         # Bright screen white
+    typography:
+      heading_font: Outfit           # Bouncy but sharp, runway-ready
+      body_font: Space Grotesk       # Techy but approachable
+    vibe:
+      name: Arcade Overflow
+      palette_name: Token Rush
+      density: dense
+      motion: dynamic
+      shapes: rounded
+
+settings:
+  currency: USD
+  timezone: America/Los_Angeles
+  checkout:
+    require_phone: false
+    enable_tips: true
+  shipping:
+    domestic_flat_rate: 5.99
+    free_shipping_threshold: 50
+
+# Theme notes for manual customization:
+# - Bento grid layout with uneven card sizes, some cards "pop" forward
+# - Elements bounce in with overshoot easing
+# - Buttons pulse on hover
+# - Scanline texture overlay on images (CRT monitor nostalgia)
+# - Rounded rectangles, pill shapes, chunky borders
+# - Y2K aesthetic meets high fashion

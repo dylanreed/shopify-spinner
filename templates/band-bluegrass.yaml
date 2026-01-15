@@ -1,0 +1,43 @@
+# ABOUTME: Bluegrass band merch theme - Porch Light aesthetic.
+# ABOUTME: Appalachian front porch meets letterpress. Calm, handmade, unhurried.
+
+store:
+  name: Bluegrass Band Store
+  email: merch@example.com
+
+theme:
+  source: dawn
+  settings:
+    colors:
+      primary: "#5c4033"      # Walnut wood, instrument neck
+      secondary: "#8b9f82"    # Mountain sage, porch plant
+      background: "#f9f6f0"   # Unbleached cotton, old paper
+      accent: "#c17f59"       # Clay pot, sunset on barn
+      text: "#2d2a26"         # Woodstove soot
+    typography:
+      heading_font: Newsreader       # Editorial warmth, crafted letterforms
+      body_font: Lora                # Gentle serif, comfortable reading
+    vibe:
+      name: Porch Light
+      palette_name: Holler Evening
+      density: sparse
+      motion: still
+      shapes: organic
+
+settings:
+  currency: USD
+  timezone: America/New_York
+  checkout:
+    require_phone: false
+    enable_tips: false
+  shipping:
+    domestic_flat_rate: 4.99
+    free_shipping_threshold: 45
+
+# Theme notes for manual customization:
+# - Asymmetric layouts like items arranged naturally on a porch
+# - Gentle fade animations, no bounce or overshoot
+# - Cross-stitch or quilt pattern as section dividers
+# - Generous margins and room to breathe
+# - Organic, handcrafted edges, nothing perfectly geometric
+# - Unhurried, real, handmade feeling throughout

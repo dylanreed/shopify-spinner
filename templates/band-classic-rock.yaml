@@ -1,0 +1,43 @@
+# ABOUTME: Classic Rock band merch theme - Analog Session aesthetic.
+# ABOUTME: 1970s recording studio meets luxury leather. Warm, nostalgic, timeless.
+
+store:
+  name: Classic Rock Band Store
+  email: merch@example.com
+
+theme:
+  source: dawn
+  settings:
+    colors:
+      primary: "#d4a056"      # Aged brass, guitar hardware
+      secondary: "#2d1810"    # Worn leather, whiskey in glass
+      background: "#f5efe6"   # Aged paper, vinyl sleeve
+      accent: "#c23a2b"       # Vintage poster red
+      text: "#1a1208"         # Ink, not pixels
+    typography:
+      heading_font: Playfair Display  # Sophisticated, album cover worthy
+      body_font: Libre Baskerville    # Warm serif, reads like liner notes
+    vibe:
+      name: Analog Session
+      palette_name: Backstage Bourbon
+      density: balanced
+      motion: subtle
+      shapes: rounded
+
+settings:
+  currency: USD
+  timezone: America/Los_Angeles
+  checkout:
+    require_phone: false
+    enable_tips: false
+  shipping:
+    domestic_flat_rate: 6.99
+    free_shipping_threshold: 60
+
+# Theme notes for manual customization:
+# - Content framed like concert posters with borders and worn edges
+# - Fade-in with slight blur animations (like photographs developing)
+# - Paper grain texture on backgrounds
+# - Slight sepia shift on product images
+# - Subtle rounded corners, nothing sharp or digital
+# - Timeless editorial feel, like flipping through liner notes

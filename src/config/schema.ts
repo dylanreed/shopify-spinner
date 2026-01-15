@@ -12,12 +12,23 @@ export const ThemeSettingsSchema = z.object({
   colors: z.object({
     primary: z.string().optional(),
     secondary: z.string().optional(),
+    background: z.string().optional(),
+    accent: z.string().optional(),
+    text: z.string().optional(),
   }).optional(),
   typography: z.object({
     heading_font: z.string().optional(),
     body_font: z.string().optional(),
   }).optional(),
   logo: z.string().optional(),
+  // Extended theme metadata for band themes
+  vibe: z.object({
+    name: z.string().optional(),
+    palette_name: z.string().optional(),
+    density: z.enum(['sparse', 'balanced', 'dense']).optional(),
+    motion: z.enum(['still', 'subtle', 'moderate', 'dynamic']).optional(),
+    shapes: z.enum(['sharp', 'rounded', 'organic', 'mixed']).optional(),
+  }).optional(),
 }).optional();
 
 export const ThemeSchema = z.object({

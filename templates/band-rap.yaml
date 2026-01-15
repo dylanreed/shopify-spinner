@@ -1,0 +1,43 @@
+# ABOUTME: Rap artist merch theme - Penthouse Hours aesthetic.
+# ABOUTME: Luxury fashion meets street art. Confident, commanding, premium.
+
+store:
+  name: Rap Artist Store
+  email: merch@example.com
+
+theme:
+  source: dawn
+  settings:
+    colors:
+      primary: "#000000"      # Black on black, luxury packaging
+      secondary: "#1a1a1a"    # Tinted glass, dark leather
+      background: "#0f0f0f"   # City at night through tinted windows
+      accent: "#d4af37"       # Gold chains, champagne label
+      text: "#ffffff"         # Clean, bright, unmissable
+    typography:
+      heading_font: Oswald           # Condensed power, billboard presence
+      body_font: Inter               # Clean, modern, tight tracking
+    vibe:
+      name: Penthouse Hours
+      palette_name: After Midnight
+      density: sparse
+      motion: moderate
+      shapes: sharp
+
+settings:
+  currency: USD
+  timezone: America/Los_Angeles
+  checkout:
+    require_phone: false
+    enable_tips: true
+  shipping:
+    domestic_flat_rate: 8.99
+    free_shipping_threshold: 100
+
+# Theme notes for manual customization:
+# - Large typography as design element, words become visuals
+# - Slide-up with slight scale animation (confident entrance)
+# - Strategic emptiness, luxury uses space deliberately
+# - Sharp rectangles, hard edges, nothing soft
+# - Occasional spray-paint texture or drip on accent elements
+# - Commanding presence, minimal words maximum impact
