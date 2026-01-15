@@ -1,0 +1,89 @@
+{
+  "general": {
+    "accessibility": {
+      "skip_to_content": "Skip to content",
+      "close": "Close"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {{ current }} of {{ total }}"
+    },
+    "search": {
+      "placeholder": "Search...",
+      "submit": "Search",
+      "no_results": "No results found for \"{{ terms }}\"",
+      "results_count": "{{ count }} results for \"{{ terms }}\""
+    }
+  },
+  "products": {
+    "product": {
+      "add_to_cart": "Add to Cart",
+      "sold_out": "Sold Out",
+      "unavailable": "Unavailable",
+      "quantity": "Quantity",
+      "sale": "Sale",
+      "from_price": "From {{ price }}"
+    }
+  },
+  "collections": {
+    "general": {
+      "no_products": "No products found in this collection.",
+      "products_count": "{{ count }} products",
+      "sort_by": "Sort by",
+      "view_all": "View All"
+    }
+  },
+  "cart": {
+    "general": {
+      "title": "Your Cart",
+      "empty": "Your cart is empty.",
+      "continue_shopping": "Continue Shopping",
+      "subtotal": "Subtotal",
+      "checkout": "Checkout",
+      "update": "Update Cart",
+      "remove": "Remove",
+      "shipping_note": "Shipping and taxes calculated at checkout."
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "My Account",
+      "orders": "Order History",
+      "addresses": "Addresses",
+      "logout": "Log Out"
+    },
+    "login": {
+      "title": "Login",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Sign In",
+      "forgot_password": "Forgot your password?",
+      "create_account": "Create Account"
+    },
+    "register": {
+      "title": "Create Account",
+      "first_name": "First Name",
+      "last_name": "Last Name",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Create"
+    }
+  },
+  "layout": {
+    "header": {
+      "menu": "Menu",
+      "cart": "Cart",
+      "search": "Search",
+      "account": "Account"
+    },
+    "footer": {
+      "copyright": "© {{ year }} {{ shop_name }}. All rights reserved."
+    }
+  },
+  "404": {
+    "title": "Page Not Found",
+    "subtext": "The page you're looking for doesn't exist.",
+    "link": "Continue Shopping"
+  }
+}
