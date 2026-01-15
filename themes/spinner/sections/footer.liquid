@@ -1,0 +1,278 @@
+{% comment %}
+  ABOUTME: Site footer with links, social, and copyright
+  ABOUTME: Configurable columns and social links
+{% endcomment %}
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <a href="/" class="footer__logo">
+          {% if settings.logo != blank %}
+            <img src="{{ settings.logo | image_url: width: settings.logo_width }}" alt="{{ shop.name }}">
+          {% else %}
+            <span class="footer__logo-text">{{ shop.name }}</span>
+          {% endif %}
+        </a>
+        {% if section.settings.tagline != blank %}
+          <p class="footer__tagline">{{ section.settings.tagline }}</p>
+        {% endif %}
+      </div>
+
+      {% if linklists.footer.links.size > 0 %}
+        <div class="footer__links">
+          <h4 class="footer__heading">Quick Links</h4>
+          <ul class="footer__list">
+            {% for link in linklists.footer.links %}
+              <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      <div class="footer__contact">
+        <h4 class="footer__heading">Contact</h4>
+        <ul class="footer__list">
+          {% if section.settings.email != blank %}
+            <li><a href="mailto:{{ section.settings.email }}">{{ section.settings.email }}</a></li>
+          {% endif %}
+          {% if section.settings.phone != blank %}
+            <li><a href="tel:{{ section.settings.phone }}">{{ section.settings.phone }}</a></li>
+          {% endif %}
+        </ul>
+      </div>
+
+      <div class="footer__social">
+        <h4 class="footer__heading">Follow Us</h4>
+        <div class="footer__social-links">
+          {% if section.settings.social_instagram != blank %}
+            <a href="{{ section.settings.social_instagram }}" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+          {% endif %}
+          {% if section.settings.social_twitter != blank %}
+            <a href="{{ section.settings.social_twitter }}" target="_blank" rel="noopener" aria-label="Twitter">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+              </svg>
+            </a>
+          {% endif %}
+          {% if section.settings.social_youtube != blank %}
+            <a href="{{ section.settings.social_youtube }}" target="_blank" rel="noopener" aria-label="YouTube">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+                <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+              </svg>
+            </a>
+          {% endif %}
+          {% if section.settings.social_tiktok != blank %}
+            <a href="{{ section.settings.social_tiktok }}" target="_blank" rel="noopener" aria-label="TikTok">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+              </svg>
+            </a>
+          {% endif %}
+          {% if section.settings.social_spotify != blank %}
+            <a href="{{ section.settings.social_spotify }}" target="_blank" rel="noopener" aria-label="Spotify">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+              </svg>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p class="footer__copyright">
+        &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.
+      </p>
+      <div class="footer__payment">
+        {{ shop.enabled_payment_types | payment_type_svg_tag }}
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+.footer {
+  background: var(--color-secondary);
+  padding: var(--space-xl) 0 var(--space-lg);
+  margin-top: auto;
+}
+
+.footer__grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: var(--space-xl);
+  margin-bottom: var(--space-xl);
+}
+
+.footer__logo {
+  display: inline-block;
+  margin-bottom: var(--space-md);
+}
+
+.footer__logo img {
+  height: auto;
+  max-width: 150px;
+}
+
+.footer__logo-text {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  color: var(--color-text);
+}
+
+.footer__tagline {
+  opacity: 0.7;
+  font-size: 0.9rem;
+}
+
+.footer__heading {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  margin-bottom: var(--space-md);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.footer__list {
+  list-style: none;
+}
+
+.footer__list li {
+  margin-bottom: var(--space-sm);
+}
+
+.footer__list a {
+  color: var(--color-text);
+  opacity: 0.7;
+  transition: opacity var(--transition-speed) ease;
+}
+
+.footer__list a:hover {
+  opacity: 1;
+  color: var(--color-accent);
+}
+
+.footer__social-links {
+  display: flex;
+  gap: var(--space-md);
+}
+
+.footer__social-links a {
+  color: var(--color-text);
+  opacity: 0.7;
+  transition: all var(--transition-speed) ease;
+}
+
+.footer__social-links a:hover {
+  opacity: 1;
+  color: var(--color-accent);
+  transform: translateY(-2px);
+}
+
+.footer__bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-primary);
+}
+
+.footer__copyright {
+  font-size: 0.875rem;
+  opacity: 0.6;
+}
+
+.footer__payment svg {
+  height: 24px;
+  width: auto;
+  margin-left: var(--space-xs);
+}
+
+@media (max-width: 768px) {
+  .footer__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-lg);
+  }
+
+  .footer__brand {
+    grid-column: span 2;
+  }
+
+  .footer__bottom {
+    flex-direction: column;
+    gap: var(--space-md);
+    text-align: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .footer__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer__brand {
+    grid-column: span 1;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Official Merch Store"
+    },
+    {
+      "type": "text",
+      "id": "email",
+      "label": "Contact Email"
+    },
+    {
+      "type": "text",
+      "id": "phone",
+      "label": "Contact Phone"
+    },
+    {
+      "type": "header",
+      "content": "Social Links"
+    },
+    {
+      "type": "url",
+      "id": "social_instagram",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "url",
+      "id": "social_twitter",
+      "label": "Twitter URL"
+    },
+    {
+      "type": "url",
+      "id": "social_youtube",
+      "label": "YouTube URL"
+    },
+    {
+      "type": "url",
+      "id": "social_tiktok",
+      "label": "TikTok URL"
+    },
+    {
+      "type": "url",
+      "id": "social_spotify",
+      "label": "Spotify URL"
+    }
+  ]
+}
+{% endschema %}
