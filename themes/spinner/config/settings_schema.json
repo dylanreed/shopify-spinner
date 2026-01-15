@@ -3,7 +3,9 @@
     "name": "theme_info",
     "theme_name": "Spinner",
     "theme_version": "1.0.0",
-    "theme_author": "Spinner CLI"
+    "theme_author": "Spinner CLI",
+    "theme_documentation_url": "https://shopify.dev/docs/storefronts/themes",
+    "theme_support_email": "support@example.com"
   },
   {
     "name": "Layout",

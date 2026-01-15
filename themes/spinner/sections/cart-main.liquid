@@ -19,6 +19,8 @@
                       src="{{ item.image | image_url: width: 200 }}"
                       alt="{{ item.image.alt | default: item.title }}"
                       loading="lazy"
+                      width="200"
+                      height="{{ 200 | divided_by: item.image.aspect_ratio | round }}"
                     >
                   </a>
                 {% else %}

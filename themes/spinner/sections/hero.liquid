@@ -16,6 +16,8 @@
             src="{{ section.settings.image | image_url: width: 1920 }}"
             alt="{{ section.settings.image.alt | default: section.settings.heading }}"
             loading="eager"
+            width="1920"
+            height="{{ 1920 | divided_by: section.settings.image.aspect_ratio | round }}"
             class="hero__image"
           >
         {% else %}
@@ -60,6 +62,8 @@
               src="{{ section.settings.image | image_url: width: 960 }}"
               alt="{{ section.settings.image.alt | default: section.settings.heading }}"
               loading="eager"
+              width="960"
+              height="{{ 960 | divided_by: section.settings.image.aspect_ratio | round }}"
               class="hero__image"
             >
           {% else %}
@@ -79,6 +83,8 @@
             src="{{ section.settings.image | image_url: width: 1920 }}"
             alt="{{ section.settings.image.alt | default: section.settings.heading }}"
             loading="eager"
+            width="1920"
+            height="{{ 1920 | divided_by: section.settings.image.aspect_ratio | round }}"
             class="hero__image"
           >
         {% else %}

@@ -7,9 +7,9 @@
   <div class="container">
     <div class="footer__grid">
       <div class="footer__brand">
-        <a href="/" class="footer__logo">
+        <a href="{{ routes.root_url }}" class="footer__logo">
           {% if settings.logo != blank %}
-            <img src="{{ settings.logo | image_url: width: settings.logo_width }}" alt="{{ shop.name }}">
+            <img src="{{ settings.logo | image_url: width: settings.logo_width }}" alt="{{ shop.name }}" width="{{ settings.logo_width }}" height="{{ settings.logo_width | divided_by: settings.logo.aspect_ratio | round }}">
           {% else %}
             <span class="footer__logo-text">{{ shop.name }}</span>
           {% endif %}

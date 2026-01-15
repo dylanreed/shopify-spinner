@@ -11,9 +11,9 @@
   {% case nav_style %}
     {% when 'topbar' %}
       <div class="header__topbar container">
-        <a href="/" class="header__logo">
+        <a href="{{ routes.root_url }}" class="header__logo">
           {% if settings.logo != blank %}
-            <img src="{{ settings.logo | image_url: width: settings.logo_width }}" alt="{{ shop.name }}" width="{{ settings.logo_width }}">
+            <img src="{{ settings.logo | image_url: width: settings.logo_width }}" alt="{{ shop.name }}" width="{{ settings.logo_width }}" height="{{ settings.logo_width | divided_by: settings.logo.aspect_ratio | round }}">
           {% else %}
             <span class="header__logo-text">{{ shop.name }}</span>
           {% endif %}
@@ -50,9 +50,9 @@
             <line x1="3" y1="18" x2="21" y2="18"></line>
           </svg>
         </button>
-        <a href="/" class="header__logo">
+        <a href="{{ routes.root_url }}" class="header__logo">
           {% if settings.logo != blank %}
-            <img src="{{ settings.logo | image_url: width: settings.logo_width }}" alt="{{ shop.name }}" width="{{ settings.logo_width }}">
+            <img src="{{ settings.logo | image_url: width: settings.logo_width }}" alt="{{ shop.name }}" width="{{ settings.logo_width }}" height="{{ settings.logo_width | divided_by: settings.logo.aspect_ratio | round }}">
           {% else %}
             <span class="header__logo-text">{{ shop.name }}</span>
           {% endif %}
@@ -84,9 +84,9 @@
 
     {% when 'sidebar' %}
       <aside class="header__sidebar">
-        <a href="/" class="header__logo">
+        <a href="{{ routes.root_url }}" class="header__logo">
           {% if settings.logo != blank %}
-            <img src="{{ settings.logo | image_url: width: settings.logo_width }}" alt="{{ shop.name }}" width="{{ settings.logo_width }}">
+            <img src="{{ settings.logo | image_url: width: settings.logo_width }}" alt="{{ shop.name }}" width="{{ settings.logo_width }}" height="{{ settings.logo_width | divided_by: settings.logo.aspect_ratio | round }}">
           {% else %}
             <span class="header__logo-text">{{ shop.name }}</span>
           {% endif %}

@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>{{ page_title }}</title>
+  {{ content_for_header }}
 
   {%- comment -%} Preconnect to Google Fonts for faster loading {%- endcomment -%}
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -57,7 +58,6 @@
     {%- endcase -%}
   </noscript>
 
-  {{ content_for_header }}
   {% render 'css-variables' %}
   {{ 'theme.css' | asset_url | stylesheet_tag }}
 </head>

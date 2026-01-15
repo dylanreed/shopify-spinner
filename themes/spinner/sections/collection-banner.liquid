@@ -10,6 +10,8 @@
         src="{{ collection.image | image_url: width: 1920 }}"
         alt="{{ collection.image.alt | default: collection.title }}"
         loading="eager"
+        width="1920"
+        height="{{ 1920 | divided_by: collection.image.aspect_ratio | round }}"
       >
       <div class="collection-banner__overlay"></div>
     </div>
@@ -77,6 +79,43 @@
 {% schema %}
 {
   "name": "Collection Banner",
-  "settings": []
+  "class": "section-collection-banner",
+  "blocks": [
+    { "type": "@app" }
+  ],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show collection description",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_count",
+      "label": "Show product count",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 60,
+      "unit": "px"
+    }
+  ]
 }
 {% endschema %}
