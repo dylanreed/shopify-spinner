@@ -1,6 +1,7 @@
 // ABOUTME: Entry point for the Shopify Spinner CLI.
 // ABOUTME: Parses commands and delegates to appropriate handlers.
 
+import 'dotenv/config';
 import { Command } from 'commander';
 import chalk from 'chalk';
 import { validateCommand } from './cli/commands/validate.js';
