@@ -1,0 +1,122 @@
+{% comment %}
+  ABOUTME: Search results page section
+  ABOUTME: Displays search form and results grid
+{% endcomment %}
+
+<section class="search-results section">
+  <div class="container">
+    <h1 class="search-results__title">Search</h1>
+
+    <form action="{{ routes.search_url }}" method="get" class="search-results__form">
+      <input
+        type="search"
+        name="q"
+        value="{{ search.terms | escape }}"
+        placeholder="Search products..."
+        class="search-results__input"
+      >
+      <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    {% if search.performed %}
+      {% if search.results_count > 0 %}
+        <p class="search-results__count">
+          {{ search.results_count }} results for "{{ search.terms }}"
+        </p>
+
+        {% paginate search.results by 12 %}
+          <div class="product-grid product-grid-classic">
+            {% for item in search.results %}
+              {% if item.object_type == 'product' %}
+                {% render 'product-card', product: item %}
+              {% else %}
+                <article class="search-result-item">
+                  <h3><a href="{{ item.url }}">{{ item.title }}</a></h3>
+                  <p>{{ item.content | strip_html | truncate: 150 }}</p>
+                </article>
+              {% endif %}
+            {% endfor %}
+          </div>
+
+          {% if paginate.pages > 1 %}
+            <nav class="pagination" aria-label="Search pagination">
+              {% if paginate.previous %}
+                <a href="{{ paginate.previous.url }}" class="pagination__link">&larr; Previous</a>
+              {% endif %}
+              <span class="pagination__current">Page {{ paginate.current_page }} of {{ paginate.pages }}</span>
+              {% if paginate.next %}
+                <a href="{{ paginate.next.url }}" class="pagination__link">Next &rarr;</a>
+              {% endif %}
+            </nav>
+          {% endif %}
+        {% endpaginate %}
+
+      {% else %}
+        <div class="search-results__empty">
+          <p>No results found for "{{ search.terms }}".</p>
+          <p>Try a different search term or browse our collections.</p>
+          <a href="{{ routes.all_products_collection_url }}" class="btn btn-secondary">
+            Browse All Products
+          </a>
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+</section>
+
+<style>
+.search-results__title {
+  margin-bottom: var(--space-lg);
+}
+
+.search-results__form {
+  display: flex;
+  gap: var(--space-md);
+  max-width: 600px;
+  margin-bottom: var(--space-xl);
+}
+
+.search-results__input {
+  flex: 1;
+}
+
+.search-results__count {
+  margin-bottom: var(--space-lg);
+  opacity: 0.7;
+}
+
+.search-results__empty {
+  text-align: center;
+  padding: var(--space-xl);
+}
+
+.search-results__empty p {
+  margin-bottom: var(--space-md);
+}
+
+.search-result-item {
+  background: var(--color-secondary);
+  padding: var(--space-lg);
+  border-radius: var(--radius-md);
+}
+
+.search-result-item h3 {
+  margin-bottom: var(--space-sm);
+}
+
+.search-result-item h3 a {
+  color: var(--color-text);
+}
+
+.search-result-item p {
+  opacity: 0.7;
+  font-size: 0.9rem;
+}
+</style>
+
+{% schema %}
+{
+  "name": "Search Results",
+  "settings": []
+}
+{% endschema %}
