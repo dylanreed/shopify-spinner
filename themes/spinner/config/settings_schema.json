@@ -3,9 +3,7 @@
     "name": "theme_info",
     "theme_name": "Spinner",
     "theme_version": "1.0.0",
-    "theme_author": "Spinner CLI",
-    "theme_documentation_url": "",
-    "theme_support_url": ""
+    "theme_author": "Spinner CLI"
   },
   {
     "name": "Layout",
