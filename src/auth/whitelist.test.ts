@@ -44,6 +44,16 @@ describe('Whitelist', () => {
       expect(whitelist.isAllowed('TEST-STORE.myshopify.com')).toBe(true);
       expect(whitelist.isAllowed('test-store')).toBe(true);
     });
+
+    it('handles URLs with protocol and trailing slash', () => {
+      writeFileSync(testPath, JSON.stringify({
+        allowed_shops: ['https://test-store.myshopify.com/']
+      }));
+      const whitelist = new Whitelist(testPath);
+      expect(whitelist.isAllowed('test-store.myshopify.com')).toBe(true);
+      expect(whitelist.isAllowed('https://test-store.myshopify.com/')).toBe(true);
+      expect(whitelist.isAllowed('test-store')).toBe(true);
+    });
   });
 
   describe('addShop', () => {

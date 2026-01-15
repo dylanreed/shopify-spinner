@@ -17,6 +17,11 @@ export class Whitelist {
 
   private normalizeDomain(shop: string): string {
     let normalized = shop.toLowerCase().trim();
+    // Strip protocol
+    normalized = normalized.replace(/^https?:\/\//, '');
+    // Strip trailing slash
+    normalized = normalized.replace(/\/$/, '');
+    // Add .myshopify.com if missing
     if (!normalized.includes('.')) {
       normalized = `${normalized}.myshopify.com`;
     }

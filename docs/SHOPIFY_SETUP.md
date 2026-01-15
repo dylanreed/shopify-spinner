@@ -52,7 +52,14 @@ SHOPIFY_CLIENT_SECRET=your-client-secret-here
 ```
 
 ## Step 5: Whitelist Your Stores
-
+http://localhost:3000/auth?shop=pit-viper-funeral.myshopify.com
+http://localhost:3000/auth?shop=glitter-bomb-evacuation.myshopify.com
+http://localhost:3000/auth?shop=mustache-ride-to-freedom.myshopify.com
+http://localhost:3000/auth?shop=trailer-park-shakespeare.myshopify.com
+http://localhost:3000/auth?shop=banjo-crimes-unit.myshopify.com
+http://localhost:3000/auth?shop=lil-tax-bracket.myshopify.com
+http://localhost:3000/auth?shop=goatproof.myshopify.com
+	
 Before a store can install the app, add it to the whitelist:
 
 ```bash
