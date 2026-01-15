@@ -7,6 +7,12 @@ import { validateCommand } from './cli/commands/validate.js';
 import { createCommand } from './cli/commands/create.js';
 import { listCommand } from './cli/commands/list.js';
 import { statusCommand } from './cli/commands/status.js';
+import { authServerCommand } from './cli/commands/auth.js';
+import {
+  whitelistAddCommand,
+  whitelistRemoveCommand,
+  whitelistListCommand,
+} from './cli/commands/whitelist.js';
 
 const program = new Command();
 
@@ -64,5 +70,32 @@ program
   .action(async (store) => {
     await statusCommand(store);
   });
+
+program
+  .command('serve')
+  .description('Start OAuth server for app installation')
+  .option('-p, --port <port>', 'Port to run server on', '3000')
+  .action((options) => {
+    authServerCommand({ port: parseInt(options.port, 10) });
+  });
+
+const whitelistCmd = program
+  .command('whitelist')
+  .description('Manage shop whitelist');
+
+whitelistCmd
+  .command('add <shop>')
+  .description('Add shop to whitelist')
+  .action(whitelistAddCommand);
+
+whitelistCmd
+  .command('remove <shop>')
+  .description('Remove shop from whitelist')
+  .action(whitelistRemoveCommand);
+
+whitelistCmd
+  .command('list')
+  .description('List all whitelisted shops')
+  .action(whitelistListCommand);
 
 program.parse();
