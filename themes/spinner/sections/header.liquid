@@ -398,6 +398,74 @@ document.addEventListener('DOMContentLoaded', function() {
 {% schema %}
 {
   "name": "Header",
-  "settings": []
+  "class": "section-header",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "sticky_header",
+      "label": "t:sections.header.settings.sticky_header.label",
+      "default": true,
+      "info": "t:sections.header.settings.sticky_header.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_search",
+      "label": "t:sections.header.settings.show_search.label",
+      "default": true
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "t:sections.header.settings.menu.label",
+      "default": "main-menu"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.header.settings.header_colors.content"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_custom_colors",
+      "label": "t:sections.header.settings.use_custom_colors.label",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:sections.header.settings.background_color.label"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "t:sections.header.settings.text_color.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.header.settings.header_spacing.content"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:sections.header.settings.padding_top.label",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:sections.header.settings.padding_bottom.label",
+      "min": 0,
+      "max": 60,
+      "step": 4,
+      "default": 16,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    { "type": "@app" }
+  ]
 }
 {% endschema %}

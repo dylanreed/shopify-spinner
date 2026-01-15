@@ -1,5 +1,48 @@
 {
-  "current": "Default",
+  "current": {
+    "layout_style": "standard",
+    "navigation_style": "topbar",
+    "animation_level": "subtle",
+    "font_pairing": "penthouse",
+    "color_palette": "after-midnight",
+    "custom_colors_enabled": false,
+    "sections": {
+      "header": {
+        "type": "header",
+        "settings": {}
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "tagline": "Official Merch Store"
+        }
+      },
+      "hero-index": {
+        "type": "hero",
+        "settings": {
+          "hero_style": "full-bleed",
+          "heading": "Welcome to our store",
+          "subheading": "Check out our latest merch",
+          "button_text": "Shop Now",
+          "button_link": "shopify://collections/all"
+        }
+      },
+      "featured-collection-index": {
+        "type": "featured-collection",
+        "settings": {
+          "title": "Featured Products",
+          "collection": "",
+          "grid_style": "classic",
+          "products_to_show": 8,
+          "show_view_all": true
+        }
+      }
+    },
+    "content_for_index": [
+      "hero-index",
+      "featured-collection-index"
+    ]
+  },
   "presets": {
     "Default": {
       "layout_style": "standard",

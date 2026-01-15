@@ -9,53 +9,58 @@ import type { ShopifyClient } from '../shopify/client.js';
 describe('ProductBuilder', () => {
   const mockClient = {
     mutate: vi.fn(),
+    query: vi.fn(),
   } as unknown as ShopifyClient;
+
+  const mockPublicationsResponse = {
+    publications: {
+      edges: [
+        { node: { id: 'gid://shopify/Publication/1', name: 'Online Store' } },
+      ],
+    },
+  };
+
+  const mockPublishResponse = {
+    publishablePublish: {
+      publishable: { availablePublicationsCount: { count: 1 } },
+      userErrors: [],
+    },
+  };
 
   beforeEach(() => {
     vi.clearAllMocks();
+    (mockClient.query as ReturnType<typeof vi.fn>).mockResolvedValue(mockPublicationsResponse);
   });
 
-  it('builds correct productCreate mutation input', () => {
-    const builder = new ProductBuilder(mockClient);
-
-    const product: Product = {
-      handle: 'test-tee',
-      title: 'Test T-Shirt',
-      description: 'A test product',
-      vendor: 'Test Vendor',
-      type: 'Shirts',
-      tags: ['cotton', 'summer'],
-      variants: [{
-        sku: 'TEE-001',
-        price: 29.99,
-        compareAtPrice: 39.99,
-        inventoryQty: 100,
-        weight: 0.3,
-        weightUnit: 'lb',
-        imageUrl: 'https://example.com/tee.jpg',
-        options: {},
-      }],
-    };
-
-    const input = builder.buildProductInput(product);
-
-    expect(input.title).toBe('Test T-Shirt');
-    expect(input.descriptionHtml).toBe('A test product');
-    expect(input.vendor).toBe('Test Vendor');
-    expect(input.productType).toBe('Shirts');
-    expect(input.tags).toEqual(['cotton', 'summer']);
-  });
-
-  it('creates product via API', async () => {
-    (mockClient.mutate as ReturnType<typeof vi.fn>).mockResolvedValueOnce({
-      productCreate: {
-        product: {
-          id: 'gid://shopify/Product/123',
-          title: 'Test T-Shirt',
+  it('creates product and adds variants via bulk create', async () => {
+    (mockClient.mutate as ReturnType<typeof vi.fn>)
+      // Product create
+      .mockResolvedValueOnce({
+        productCreate: {
+          product: {
+            id: 'gid://shopify/Product/123',
+            title: 'Test T-Shirt',
+            handle: 'test-tee',
+            variants: {
+              edges: [{ node: { id: 'gid://shopify/ProductVariant/default' } }],
+            },
+          },
+          userErrors: [],
         },
-        userErrors: [],
-      },
-    });
+      })
+      // Variants bulk create
+      .mockResolvedValueOnce({
+        productVariantsBulkCreate: {
+          product: { id: 'gid://shopify/Product/123' },
+          productVariants: [
+            { id: 'gid://shopify/ProductVariant/1', sku: 'TEE-001-S' },
+            { id: 'gid://shopify/ProductVariant/2', sku: 'TEE-001-M' },
+          ],
+          userErrors: [],
+        },
+      })
+      // Publish
+      .mockResolvedValueOnce(mockPublishResponse);
 
     const builder = new ProductBuilder(mockClient);
 
@@ -67,17 +72,86 @@ describe('ProductBuilder', () => {
       type: 'Shirts',
       tags: [],
       variants: [{
-        sku: 'TEE-001',
+        sku: 'TEE-001-S',
         price: 29.99,
         inventoryQty: 100,
-        options: {},
+        options: { Size: 'Small' },
+      }, {
+        sku: 'TEE-001-M',
+        price: 29.99,
+        inventoryQty: 150,
+        options: { Size: 'Medium' },
       }],
     };
 
     const result = await builder.createProduct(product);
 
     expect(result.id).toBe('gid://shopify/Product/123');
-    expect(mockClient.mutate).toHaveBeenCalled();
+    expect(mockClient.mutate).toHaveBeenCalledTimes(3); // create + bulk variants + publish
+
+    // Verify variants bulk create was called with correct data
+    const bulkCall = (mockClient.mutate as ReturnType<typeof vi.fn>).mock.calls[1];
+    expect(bulkCall[1].productId).toBe('gid://shopify/Product/123');
+    expect(bulkCall[1].variants).toHaveLength(2);
+    expect(bulkCall[1].variants[0].price).toBe('29.99');
+    expect(bulkCall[1].variants[0].inventoryItem.sku).toBe('TEE-001-S');
+    expect(bulkCall[1].strategy).toBe('REMOVE_STANDALONE_VARIANT');
+  });
+
+  it('updates default variant for single variant products without options', async () => {
+    (mockClient.mutate as ReturnType<typeof vi.fn>)
+      // Product create
+      .mockResolvedValueOnce({
+        productCreate: {
+          product: {
+            id: 'gid://shopify/Product/456',
+            title: 'Simple Product',
+            handle: 'simple',
+            variants: {
+              edges: [{ node: { id: 'gid://shopify/ProductVariant/default' } }],
+            },
+          },
+          userErrors: [],
+        },
+      })
+      // Variants bulk update
+      .mockResolvedValueOnce({
+        productVariantsBulkUpdate: {
+          product: { id: 'gid://shopify/Product/456' },
+          productVariants: [{ id: 'gid://shopify/ProductVariant/default' }],
+          userErrors: [],
+        },
+      })
+      // Publish
+      .mockResolvedValueOnce(mockPublishResponse);
+
+    const builder = new ProductBuilder(mockClient);
+
+    const product: Product = {
+      handle: 'simple',
+      title: 'Simple Product',
+      description: 'Single variant',
+      vendor: 'Test Vendor',
+      type: 'Accessories',
+      tags: [],
+      variants: [{
+        sku: 'SIMPLE-001',
+        price: 19.99,
+        inventoryQty: 50,
+        options: {},
+      }],
+    };
+
+    const result = await builder.createProduct(product);
+
+    expect(result.id).toBe('gid://shopify/Product/456');
+    expect(mockClient.mutate).toHaveBeenCalledTimes(3);
+
+    // Verify update was called
+    const updateCall = (mockClient.mutate as ReturnType<typeof vi.fn>).mock.calls[1];
+    expect(updateCall[1].variants[0].id).toBe('gid://shopify/ProductVariant/default');
+    expect(updateCall[1].variants[0].price).toBe('19.99');
+    expect(updateCall[1].variants[0].inventoryItem.sku).toBe('SIMPLE-001');
   });
 
   it('throws error when userErrors are returned', async () => {
@@ -134,19 +208,36 @@ describe('ProductBuilder', () => {
 
   it('creates multiple products and tracks failures', async () => {
     (mockClient.mutate as ReturnType<typeof vi.fn>)
+      // Product 1: create success
       .mockResolvedValueOnce({
         productCreate: {
-          product: { id: 'gid://shopify/Product/1', title: 'Product 1', handle: 'product-1' },
+          product: {
+            id: 'gid://shopify/Product/1',
+            title: 'Product 1',
+            handle: 'product-1',
+            variants: { edges: [] },
+          },
           userErrors: [],
         },
       })
+      // Product 1: publish success
+      .mockResolvedValueOnce(mockPublishResponse)
+      // Product 2: create fails
       .mockRejectedValueOnce(new Error('Network error'))
+      // Product 3: create success
       .mockResolvedValueOnce({
         productCreate: {
-          product: { id: 'gid://shopify/Product/3', title: 'Product 3', handle: 'product-3' },
+          product: {
+            id: 'gid://shopify/Product/3',
+            title: 'Product 3',
+            handle: 'product-3',
+            variants: { edges: [] },
+          },
           userErrors: [],
         },
-      });
+      })
+      // Product 3: publish success
+      .mockResolvedValueOnce(mockPublishResponse);
 
     const builder = new ProductBuilder(mockClient);
 
@@ -164,5 +255,28 @@ describe('ProductBuilder', () => {
     expect(result.failed).toHaveLength(1);
     expect(result.failed[0].product.handle).toBe('p2');
     expect(result.failed[0].error).toBe('Network error');
+  });
+
+  it('builds correct product input', async () => {
+    const builder = new ProductBuilder(mockClient);
+
+    const product: Product = {
+      handle: 'test-tee',
+      title: 'Test T-Shirt',
+      description: 'A test product',
+      vendor: 'Test Vendor',
+      type: 'Shirts',
+      tags: ['cotton', 'summer'],
+      variants: [],
+    };
+
+    const input = await builder.buildProductInput(product);
+
+    expect(input.title).toBe('Test T-Shirt');
+    expect(input.descriptionHtml).toBe('A test product');
+    expect(input.vendor).toBe('Test Vendor');
+    expect(input.productType).toBe('Shirts');
+    expect(input.tags).toEqual(['cotton', 'summer']);
+    expect(input.status).toBe('ACTIVE');
   });
 });

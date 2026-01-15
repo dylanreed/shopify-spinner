@@ -4,15 +4,68 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>{{ page_title }}</title>
+
+  {%- comment -%} Preconnect to Google Fonts for faster loading {%- endcomment -%}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  {%- comment -%} Load fonts based on font pairing with display=swap for performance {%- endcomment -%}
+  {%- case settings.font_pairing -%}
+    {%- when 'penthouse' -%}
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Oswald:wght@400;500;600;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Oswald:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    {%- when 'mosh-pit' -%}
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto+Mono:wght@400;500;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto+Mono:wght@400;500;700&display=swap" media="print" onload="this.media='all'">
+    {%- when 'honky-tonk' -%}
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+Pro:wght@400;600&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+Pro:wght@400;600&display=swap" media="print" onload="this.media='all'">
+    {%- when 'neon-stage' -%}
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@400;500;600;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    {%- when 'front-porch' -%}
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
+    {%- when 'boom-bap' -%}
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    {%- when 'garage' -%}
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Rock+Salt&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Rock+Salt&display=swap" media="print" onload="this.media='all'">
+    {%- when 'gallery' -%}
+      <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@400;500;600&display=swap">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@400;500;600&display=swap" media="print" onload="this.media='all'">
+  {%- endcase -%}
+  <noscript>
+    {%- case settings.font_pairing -%}
+      {%- when 'penthouse' -%}
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Oswald:wght@400;500;600;700&display=swap">
+      {%- when 'mosh-pit' -%}
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto+Mono:wght@400;500;700&display=swap">
+      {%- when 'honky-tonk' -%}
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+Pro:wght@400;600&display=swap">
+      {%- when 'neon-stage' -%}
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@400;500;600;700&display=swap">
+      {%- when 'front-porch' -%}
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap">
+      {%- when 'boom-bap' -%}
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&display=swap">
+      {%- when 'garage' -%}
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Rock+Salt&display=swap">
+      {%- when 'gallery' -%}
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@400;500;600&display=swap">
+    {%- endcase -%}
+  </noscript>
+
   {{ content_for_header }}
   {% render 'css-variables' %}
   {{ 'theme.css' | asset_url | stylesheet_tag }}
 </head>
 <body class="layout-{{ settings.layout_style }}">
-  {% sections 'header-group' %}
+  {% section 'header' %}
   <main id="main" role="main">
     {{ content_for_layout }}
   </main>
-  {% sections 'footer-group' %}
+  {% section 'footer' %}
 </body>
 </html>

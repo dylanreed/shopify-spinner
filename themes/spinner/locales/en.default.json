@@ -1,4 +1,175 @@
 {
+  "sections": {
+    "header": {
+      "settings": {
+        "sticky_header": {
+          "label": "Enable sticky header",
+          "info": "Header stays visible when scrolling"
+        },
+        "show_search": {
+          "label": "Show search icon"
+        },
+        "menu": {
+          "label": "Navigation menu"
+        },
+        "header_colors": {
+          "content": "Colors"
+        },
+        "use_custom_colors": {
+          "label": "Use custom colors"
+        },
+        "background_color": {
+          "label": "Background color"
+        },
+        "text_color": {
+          "label": "Text color"
+        },
+        "header_spacing": {
+          "content": "Spacing"
+        },
+        "padding_top": {
+          "label": "Top padding"
+        },
+        "padding_bottom": {
+          "label": "Bottom padding"
+        }
+      }
+    },
+    "product_main": {
+      "settings": {
+        "show_vendor": {
+          "label": "Show vendor"
+        },
+        "show_sku": {
+          "label": "Show SKU"
+        },
+        "enable_image_zoom": {
+          "label": "Enable image zoom"
+        },
+        "gallery_layout": {
+          "label": "Gallery layout",
+          "options": {
+            "stacked": "Stacked",
+            "thumbnails": "Thumbnails",
+            "carousel": "Carousel"
+          }
+        },
+        "header_spacing": {
+          "content": "Spacing"
+        },
+        "padding_top": {
+          "label": "Top padding"
+        },
+        "padding_bottom": {
+          "label": "Bottom padding"
+        }
+      },
+      "blocks": {
+        "title": {
+          "name": "Title"
+        },
+        "price": {
+          "name": "Price"
+        },
+        "variant_picker": {
+          "name": "Variant picker"
+        },
+        "quantity_selector": {
+          "name": "Quantity selector"
+        },
+        "buy_buttons": {
+          "name": "Buy buttons"
+        },
+        "description": {
+          "name": "Description"
+        }
+      }
+    },
+    "footer": {
+      "settings": {
+        "show_payment_icons": {
+          "label": "Show payment icons"
+        },
+        "show_social_links": {
+          "label": "Show social media links"
+        },
+        "tagline": {
+          "label": "Tagline"
+        },
+        "header_spacing": {
+          "content": "Spacing"
+        },
+        "padding_top": {
+          "label": "Top padding"
+        },
+        "padding_bottom": {
+          "label": "Bottom padding"
+        }
+      }
+    },
+    "hero": {
+      "settings": {
+        "hero_style": {
+          "label": "Hero style",
+          "options": {
+            "full_bleed": "Full bleed",
+            "contained": "Contained",
+            "split": "Split"
+          }
+        },
+        "image": {
+          "label": "Background image"
+        },
+        "heading": {
+          "label": "Heading"
+        },
+        "subheading": {
+          "label": "Subheading"
+        },
+        "button_text": {
+          "label": "Button text"
+        },
+        "button_link": {
+          "label": "Button link"
+        },
+        "text_alignment": {
+          "label": "Text alignment",
+          "options": {
+            "left": "Left",
+            "center": "Center",
+            "right": "Right"
+          }
+        },
+        "min_height": {
+          "label": "Minimum height"
+        }
+      }
+    },
+    "featured_collection": {
+      "settings": {
+        "title": {
+          "label": "Title"
+        },
+        "collection": {
+          "label": "Collection"
+        },
+        "products_to_show": {
+          "label": "Products to show"
+        },
+        "grid_style": {
+          "label": "Grid style",
+          "options": {
+            "classic": "Classic grid",
+            "masonry": "Masonry",
+            "carousel": "Carousel"
+          }
+        },
+        "show_view_all": {
+          "label": "Show 'View all' button"
+        }
+      }
+    }
+  },
   "general": {
     "accessibility": {
       "skip_to_content": "Skip to content",

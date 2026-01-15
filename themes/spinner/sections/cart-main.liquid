@@ -5,7 +5,7 @@
 
 <section class="cart-main section">
   <div class="container">
-    <h1 class="cart-main__title">Your Cart</h1>
+    <h1 class="cart-main__title">{{ 'cart.general.title' | t }}</h1>
 
     {% if cart.item_count > 0 %}
       <form action="{{ routes.cart_url }}" method="post" class="cart-main__form">
@@ -65,17 +65,17 @@
 
         <div class="cart-main__footer">
           <div class="cart-main__subtotal">
-            <span>Subtotal</span>
+            <span>{{ 'cart.general.subtotal' | t }}</span>
             <span class="cart-main__subtotal-price">{{ cart.total_price | money }}</span>
           </div>
-          <p class="cart-main__note">Shipping and taxes calculated at checkout.</p>
+          <p class="cart-main__note">{{ 'cart.general.shipping_note' | t }}</p>
 
           <div class="cart-main__actions">
             <button type="submit" name="update" class="btn btn-secondary">
-              Update Cart
+              {{ 'cart.general.update' | t }}
             </button>
             <button type="submit" name="checkout" class="btn btn-primary">
-              Checkout
+              {{ 'cart.general.checkout' | t }}
             </button>
           </div>
         </div>
@@ -83,9 +83,9 @@
 
     {% else %}
       <div class="cart-main__empty">
-        <p>Your cart is empty.</p>
+        <p>{{ 'cart.general.empty' | t }}</p>
         <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary">
-          Continue Shopping
+          {{ 'cart.general.continue_shopping' | t }}
         </a>
       </div>
     {% endif %}
@@ -249,6 +249,37 @@
 {% schema %}
 {
   "name": "Cart Main",
-  "settings": []
+  "class": "section-cart-main",
+  "blocks": [
+    { "type": "@app" }
+  ],
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 36,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 36,
+      "unit": "px"
+    }
+  ]
 }
 {% endschema %}

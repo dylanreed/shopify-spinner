@@ -18,6 +18,8 @@
               src="{{ featured_image | image_url: width: 1200 }}"
               alt="{{ featured_image.alt | default: product.title }}"
               loading="eager"
+              width="1200"
+              height="{{ 1200 | divided_by: featured_image.aspect_ratio | round }}"
               id="product-featured-image"
             >
           {% else %}
@@ -37,6 +39,8 @@
                   src="{{ image | image_url: width: 200 }}"
                   alt="{{ image.alt | default: product.title }}"
                   loading="lazy"
+                  width="200"
+                  height="{{ 200 | divided_by: image.aspect_ratio | round }}"
                 >
               </button>
             {% endfor %}
@@ -86,7 +90,7 @@
           {% endunless %}
 
           <div class="product-main__quantity">
-            <label for="quantity">Quantity</label>
+            <label for="quantity">{{ 'products.product.quantity' | t }}</label>
             <input type="number" id="quantity" name="quantity" value="1" min="1" max="99">
           </div>
 
@@ -97,9 +101,9 @@
             data-add-to-cart
           >
             {% if current_variant.available %}
-              Add to Cart
+              {{ 'products.product.add_to_cart' | t }}
             {% else %}
-              Sold Out
+              {{ 'products.product.sold_out' | t }}
             {% endif %}
           </button>
         {% endform %}
@@ -297,6 +301,94 @@ document.addEventListener('DOMContentLoaded', function() {
 {% schema %}
 {
   "name": "Product Main",
-  "settings": []
+  "class": "section-product-main",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "t:sections.product_main.settings.show_vendor.label",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_sku",
+      "label": "t:sections.product_main.settings.show_sku.label",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_image_zoom",
+      "label": "t:sections.product_main.settings.enable_image_zoom.label",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "gallery_layout",
+      "label": "t:sections.product_main.settings.gallery_layout.label",
+      "options": [
+        { "value": "stacked", "label": "t:sections.product_main.settings.gallery_layout.options.stacked" },
+        { "value": "thumbnails", "label": "t:sections.product_main.settings.gallery_layout.options.thumbnails" },
+        { "value": "carousel", "label": "t:sections.product_main.settings.gallery_layout.options.carousel" }
+      ],
+      "default": "thumbnails"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.product_main.settings.header_spacing.content"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:sections.product_main.settings.padding_top.label",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 36,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:sections.product_main.settings.padding_bottom.label",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 36,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "t:sections.product_main.blocks.title.name",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "t:sections.product_main.blocks.price.name",
+      "limit": 1
+    },
+    {
+      "type": "variant_picker",
+      "name": "t:sections.product_main.blocks.variant_picker.name",
+      "limit": 1
+    },
+    {
+      "type": "quantity_selector",
+      "name": "t:sections.product_main.blocks.quantity_selector.name",
+      "limit": 1
+    },
+    {
+      "type": "buy_buttons",
+      "name": "t:sections.product_main.blocks.buy_buttons.name",
+      "limit": 1
+    },
+    {
+      "type": "description",
+      "name": "t:sections.product_main.blocks.description.name",
+      "limit": 1
+    },
+    { "type": "@app" }
+  ]
 }
 {% endschema %}
