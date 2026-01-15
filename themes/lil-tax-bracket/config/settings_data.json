@@ -1,11 +1,47 @@
 {
-  "current": {
-    "colors_solid_button_labels": "#000000",
-    "colors_accent_1": "#d4af37",
-    "colors_accent_2": "#1a1a1a",
-    "colors_background_1": "#0f0f0f",
-    "colors_text": "#ffffff",
-    "type_header_font": "Oswald",
-    "type_body_font": "Inter"
+  "current": "Lil Tax Bracket",
+  "presets": {
+    "Lil Tax Bracket": {
+      "color_schemes": {
+        "scheme-1": {
+          "settings": {
+            "background": "#0f0f0f",
+            "background_gradient": "",
+            "text": "#ffffff",
+            "button": "#d4af37",
+            "button_label": "#000000",
+            "secondary_button_label": "#ffffff",
+            "shadow": "#0f0f0f"
+          }
+        },
+        "scheme-2": {
+          "settings": {
+            "background": "#1a1a1a",
+            "background_gradient": "",
+            "text": "#ffffff",
+            "button": "#d4af37",
+            "button_label": "#000000",
+            "secondary_button_label": "#d4af37",
+            "shadow": "#000000"
+          }
+        }
+      },
+      "type_header_font": "oswald_n4",
+      "type_body_font": "inter_n4",
+      "heading_scale": 120,
+      "body_scale": 100,
+      "buttons_radius": 0,
+      "buttons_border_thickness": 1,
+      "buttons_border_opacity": 100,
+      "inputs_radius": 0,
+      "inputs_border_thickness": 1,
+      "inputs_border_opacity": 100,
+      "cards_radius": 0,
+      "cards_border_thickness": 0,
+      "product_cards_color_scheme": "scheme-1",
+      "collection_cards_color_scheme": "scheme-1",
+      "spacing_sections": 36,
+      "page_width": 1600
+    }
   }
 }
