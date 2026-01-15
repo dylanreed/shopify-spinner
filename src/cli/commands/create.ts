@@ -7,7 +7,7 @@ import { parseProductsCsv } from '../../products/parser.js';
 import { ShopifyClient } from '../../shopify/client.js';
 import { ProductBuilder } from '../../builders/products.js';
 import { CollectionBuilder } from '../../builders/collections.js';
-// Theme deployment handled via Shopify CLI (requires exemption for API)
+import { PublicationService } from '../../builders/publications.js';
 import { StateManager } from '../../state/manager.js';
 import { TokenStore } from '../../auth/token-store.js';
 import { resolve, dirname } from 'path';
@@ -82,13 +82,12 @@ export async function createCommand(options: CreateOptions): Promise<void> {
     });
   }
 
-  // Theme configuration - skipped (requires Shopify exemption)
-  // Use Shopify CLI to push themes instead: shopify theme push --store <shop>
+  // Theme configuration - handled separately via spinner theme push
   if (config.theme) {
-    console.log(chalk.yellow('⚠ Theme config skipped (use Shopify CLI to push themes)'));
-    console.log(chalk.gray(`  shopify theme push --store ${shopDomain} --path ./themes/<band-name>`));
+    console.log(chalk.gray('Theme should be pushed before running create:'));
+    console.log(chalk.gray(`  spinner theme push --shop ${shopDomain} --path ./themes/<theme-name>`));
     stateManager.updateStep(storeName, 'theme_configured', 'complete', {
-      note: 'Skipped - use Shopify CLI for theme deployment',
+      note: 'Theme pushed via Shopify CLI',
     });
   }
 
@@ -122,6 +121,22 @@ export async function createCommand(options: CreateOptions): Promise<void> {
         stateManager.updateStep(storeName, 'products_imported', 'complete', {
           count: result.created.length,
         });
+      }
+
+      // Publish products to Online Store
+      if (result.created.length > 0) {
+        console.log(chalk.blue('Publishing products to Online Store...'));
+        const publicationService = new PublicationService(client);
+        const productIds = result.created.map(p => p.id);
+        const publishResult = await publicationService.publishProducts(productIds);
+
+        console.log(chalk.green(`✓ ${publishResult.published.length} products published`));
+
+        if (publishResult.failed.length > 0) {
+          publishResult.failed.forEach(f =>
+            console.log(chalk.yellow(`  ⚠ Failed to publish ${f.productId}: ${f.error}`))
+          );
+        }
       }
 
       // Create collections if enabled

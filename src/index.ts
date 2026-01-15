@@ -14,6 +14,7 @@ import {
   whitelistRemoveCommand,
   whitelistListCommand,
 } from './cli/commands/whitelist.js';
+import { themePushCommand, themeListCommand } from './cli/commands/theme.js';
 
 const program = new Command();
 
@@ -98,5 +99,27 @@ whitelistCmd
   .command('list')
   .description('List all whitelisted shops')
   .action(whitelistListCommand);
+
+const themeCmd = program
+  .command('theme')
+  .description('Manage Shopify themes');
+
+themeCmd
+  .command('push')
+  .description('Push theme to a Shopify store (uses Shopify CLI)')
+  .requiredOption('-s, --shop <domain>', 'Shop domain (e.g., store.myshopify.com)')
+  .option('-p, --path <path>', 'Path to theme directory', './themes/spinner')
+  .option('--unpublished', 'Push as unpublished theme')
+  .action(async (options) => {
+    await themePushCommand(options);
+  });
+
+themeCmd
+  .command('list')
+  .description('List themes on a store')
+  .requiredOption('-s, --shop <domain>', 'Shop domain')
+  .action(async (options) => {
+    await themeListCommand(options.shop);
+  });
 
 program.parse();
