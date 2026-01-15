@@ -1,0 +1,110 @@
+{% comment %}
+  ABOUTME: Featured collection section with three grid styles
+  ABOUTME: classic, masonry, featured-first controlled via settings
+{% endcomment %}
+
+{% liquid
+  assign grid_style = section.settings.grid_style
+  assign products_to_show = section.settings.products_to_show
+%}
+
+<section class="featured-collection section">
+  <div class="container">
+    {% if section.settings.title != blank %}
+      <h2 class="section-title">{{ section.settings.title }}</h2>
+    {% endif %}
+
+    {% if section.settings.collection != blank %}
+      <div class="product-grid product-grid-{{ grid_style }}">
+        {% for product in section.settings.collection.products limit: products_to_show %}
+          {% render 'product-card', product: product %}
+        {% endfor %}
+      </div>
+
+      {% if section.settings.show_view_all %}
+        <div class="featured-collection__footer">
+          <a href="{{ section.settings.collection.url }}" class="btn btn-secondary">
+            View All {{ section.settings.collection.title }}
+          </a>
+        </div>
+      {% endif %}
+    {% else %}
+      <div class="product-grid product-grid-{{ grid_style }}">
+        {% for i in (1..products_to_show) %}
+          <article class="product-card">
+            <div class="product-card__image">
+              <div class="product-card__placeholder"></div>
+            </div>
+            <div class="product-card__info">
+              <h3 class="product-card__title">Product Title</h3>
+              <p class="product-card__price">$0.00</p>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+.featured-collection__footer {
+  text-align: center;
+  margin-top: var(--space-xl);
+}
+
+.product-card__placeholder {
+  aspect-ratio: 1;
+  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-primary) 100%);
+}
+</style>
+
+{% schema %}
+{
+  "name": "Featured Collection",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Featured Products"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "select",
+      "id": "grid_style",
+      "label": "Grid Style",
+      "options": [
+        { "value": "classic", "label": "Classic" },
+        { "value": "masonry", "label": "Masonry" },
+        { "value": "featured", "label": "Featured First" }
+      ],
+      "default": "classic"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Products to Show",
+      "min": 4,
+      "max": 16,
+      "step": 2,
+      "default": 8
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show View All Button",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection"
+    }
+  ]
+}
+{% endschema %}
