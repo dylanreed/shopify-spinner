@@ -42,6 +42,8 @@ export function authServerCommand(options: AuthServerOptions): void {
         'write_themes',
         'read_inventory',
         'write_inventory',
+        'read_publications',
+        'write_publications',
       ],
       redirectUri,
     },
