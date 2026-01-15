@@ -1,0 +1,8 @@
+# ABOUTME: Store config for Mustache Ride to Freedom (classic rock band)
+# ABOUTME: Extends classic rock template with band-specific products
+
+extends: ../templates/band-classic-rock.yaml
+
+products:
+  source: ../products/classic-rock-band.csv
+  create_collections: true

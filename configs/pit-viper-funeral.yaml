@@ -1,0 +1,8 @@
+# ABOUTME: Store config for Pit Viper Funeral (metal band)
+# ABOUTME: Extends metal template with band-specific products
+
+extends: ../templates/band-metal.yaml
+
+products:
+  source: ../products/metal-band.csv
+  create_collections: true

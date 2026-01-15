@@ -1,0 +1,8 @@
+# ABOUTME: Store config for Banjo Crimes Unit (bluegrass band)
+# ABOUTME: Extends bluegrass template with band-specific products
+
+extends: ../templates/band-bluegrass.yaml
+
+products:
+  source: ../products/bluegrass-band.csv
+  create_collections: true

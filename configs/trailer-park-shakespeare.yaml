@@ -1,0 +1,8 @@
+# ABOUTME: Store config for Trailer Park Shakespeare (country band)
+# ABOUTME: Extends country template with band-specific products
+
+extends: ../templates/band-country.yaml
+
+products:
+  source: ../products/country-band.csv
+  create_collections: true

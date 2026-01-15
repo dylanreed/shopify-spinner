@@ -1,0 +1,8 @@
+# ABOUTME: Store config for Lil' Tax Bracket (rap artist)
+# ABOUTME: Extends rap template with artist-specific products
+
+extends: ../templates/band-rap.yaml
+
+products:
+  source: ../products/rap-artist.csv
+  create_collections: true

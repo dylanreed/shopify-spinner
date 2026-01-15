@@ -1,0 +1,8 @@
+# ABOUTME: Store config for Glitter Bomb Evacuation (pop band)
+# ABOUTME: Extends pop template with band-specific products
+
+extends: ../templates/band-pop.yaml
+
+products:
+  source: ../products/pop-band.csv
+  create_collections: true
