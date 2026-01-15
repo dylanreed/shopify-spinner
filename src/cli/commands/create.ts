@@ -7,7 +7,7 @@ import { parseProductsCsv } from '../../products/parser.js';
 import { ShopifyClient } from '../../shopify/client.js';
 import { ProductBuilder } from '../../builders/products.js';
 import { CollectionBuilder } from '../../builders/collections.js';
-import { ThemeBuilder } from '../../builders/theme.js';
+// Theme deployment handled via Shopify CLI (requires exemption for API)
 import { StateManager } from '../../state/manager.js';
 import { TokenStore } from '../../auth/token-store.js';
 import { resolve, dirname } from 'path';
@@ -82,20 +82,14 @@ export async function createCommand(options: CreateOptions): Promise<void> {
     });
   }
 
-  // Theme configuration
-  if (state.steps.theme_configured.status !== 'complete' && config.theme) {
-    console.log(chalk.blue('Configuring theme...'));
-    stateManager.updateStep(storeName, 'theme_configured', 'in_progress');
-
-    try {
-      const themeBuilder = new ThemeBuilder(client);
-      await themeBuilder.configureTheme(config.theme);
-      stateManager.updateStep(storeName, 'theme_configured', 'complete');
-      console.log(chalk.green('✓ Theme configured'));
-    } catch (error) {
-      stateManager.setStepError(storeName, 'theme_configured', (error as Error).message);
-      console.log(chalk.red(`✗ Theme configuration failed: ${(error as Error).message}`));
-    }
+  // Theme configuration - skipped (requires Shopify exemption)
+  // Use Shopify CLI to push themes instead: shopify theme push --store <shop>
+  if (config.theme) {
+    console.log(chalk.yellow('⚠ Theme config skipped (use Shopify CLI to push themes)'));
+    console.log(chalk.gray(`  shopify theme push --store ${shopDomain} --path ./themes/<band-name>`));
+    stateManager.updateStep(storeName, 'theme_configured', 'complete', {
+      note: 'Skipped - use Shopify CLI for theme deployment',
+    });
   }
 
   // Product import

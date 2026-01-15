@@ -1,0 +1,11 @@
+{
+  "current": {
+    "colors_solid_button_labels": "#000000",
+    "colors_accent_1": "#d4af37",
+    "colors_accent_2": "#1a1a1a",
+    "colors_background_1": "#0f0f0f",
+    "colors_text": "#ffffff",
+    "type_header_font": "Oswald",
+    "type_body_font": "Inter"
+  }
+}
