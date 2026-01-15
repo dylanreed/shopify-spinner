@@ -5,6 +5,8 @@ import { Command } from 'commander';
 import chalk from 'chalk';
 import { validateCommand } from './cli/commands/validate.js';
 import { createCommand } from './cli/commands/create.js';
+import { listCommand } from './cli/commands/list.js';
+import { statusCommand } from './cli/commands/status.js';
 
 const program = new Command();
 
@@ -46,6 +48,21 @@ program
       console.log(chalk.red(`Error: ${(error as Error).message}`));
       process.exit(1);
     }
+  });
+
+program
+  .command('list')
+  .description('List all managed stores')
+  .action(async () => {
+    await listCommand();
+  });
+
+program
+  .command('status')
+  .description('Show status of a store build')
+  .argument('<store>', 'Store name')
+  .action(async (store) => {
+    await statusCommand(store);
   });
 
 program.parse();
