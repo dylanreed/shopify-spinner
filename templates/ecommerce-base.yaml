@@ -1,0 +1,23 @@
+# ABOUTME: Base template for standard e-commerce stores.
+# ABOUTME: Extend this in client configs to inherit common settings.
+
+store:
+  name: Default Store
+  email: default@example.com
+
+theme:
+  source: dawn
+  settings:
+    typography:
+      heading_font: Montserrat
+      body_font: "Open Sans"
+
+settings:
+  currency: USD
+  timezone: America/Los_Angeles
+  checkout:
+    require_phone: false
+    enable_tips: false
+  shipping:
+    domestic_flat_rate: 5.99
+    free_shipping_threshold: 50

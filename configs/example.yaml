@@ -1,0 +1,18 @@
+# ABOUTME: Example client config that extends the base template.
+# ABOUTME: Copy this to create new client configurations.
+
+extends: ../templates/ecommerce-base.yaml
+
+store:
+  name: Example Store
+  email: client@example.com
+
+theme:
+  settings:
+    colors:
+      primary: "#3B82F6"
+      secondary: "#1E40AF"
+
+products:
+  source: ../products/example-products.csv
+  create_collections: true
