@@ -34,7 +34,8 @@ describe('ThemeBuilder', () => {
 
     const settingsData = builder.buildSettingsData(themeConfig);
 
-    expect(settingsData.current.colors_solid_button_labels).toBeDefined();
+    const current = settingsData.current as Record<string, unknown>;
+    expect(current.colors_solid_button_labels).toBeDefined();
   });
 
   it('gets main theme ID', async () => {
