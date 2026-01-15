@@ -1,8 +1,32 @@
 # ABOUTME: Store config for Mustache Ride to Freedom (classic rock band)
-# ABOUTME: Extends classic rock template with band-specific products
+# ABOUTME: Uses garage preset (raw, DIY aesthetic)
 
-extends: ../templates/band-classic-rock.yaml
+store:
+  name: Mustache Ride to Freedom
+  email: merch@mustacheride.com
+
+theme:
+  source: spinner
+  settings:
+    preset: garage
+    logo: ../assets/logos/mustache-ride-to-freedom.png
+    logo_width: 200
+    content:
+      hero_heading: "Mustache Ride to Freedom"
+      hero_subheading: "Rock & Roll Will Never Die"
+      tagline: "Loud & Proud Since '82"
+    social:
+      instagram: https://instagram.com/mustacherideband
+      youtube: https://youtube.com/@mustacherideband
+      spotify: https://open.spotify.com/artist/mustacheride
 
 products:
   source: ../products/classic-rock-band.csv
   create_collections: true
+
+settings:
+  currency: USD
+  timezone: America/Chicago
+  shipping:
+    domestic_flat_rate: 6.99
+    free_shipping_threshold: 65

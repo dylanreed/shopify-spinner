@@ -14,7 +14,7 @@ theme:
     # Override with band's brand color
     accent_override: "#8b0000"
 
-    # Logo settings
+    # Logo settings (path relative to this config file)
     logo: ../assets/logos/pit-viper-funeral.png
     logo_width: 200
     extract_colors_from_logo: false  # Set true to auto-generate palette from logo

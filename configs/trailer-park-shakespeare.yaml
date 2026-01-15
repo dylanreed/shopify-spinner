@@ -1,8 +1,32 @@
 # ABOUTME: Store config for Trailer Park Shakespeare (country band)
-# ABOUTME: Extends country template with band-specific products
+# ABOUTME: Uses honky-tonk preset (rustic, refined)
 
-extends: ../templates/band-country.yaml
+store:
+  name: Trailer Park Shakespeare
+  email: merch@trailerparkshakespeare.com
+
+theme:
+  source: spinner
+  settings:
+    preset: honky-tonk
+    logo: ../assets/logos/trailer-park-shakespeare.png
+    logo_width: 180
+    content:
+      hero_heading: "Trailer Park Shakespeare"
+      hero_subheading: "Poetry Meets Twang"
+      tagline: "To Drink or Not to Drink"
+    social:
+      instagram: https://instagram.com/tpshakespeare
+      spotify: https://open.spotify.com/artist/tpshakespeare
+      youtube: https://youtube.com/@tpshakespeare
 
 products:
   source: ../products/country-band.csv
   create_collections: true
+
+settings:
+  currency: USD
+  timezone: America/Chicago
+  shipping:
+    domestic_flat_rate: 5.99
+    free_shipping_threshold: 55

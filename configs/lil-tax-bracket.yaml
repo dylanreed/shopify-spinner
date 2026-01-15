@@ -1,8 +1,33 @@
 # ABOUTME: Store config for Lil' Tax Bracket (rap artist)
-# ABOUTME: Extends rap template with artist-specific products
+# ABOUTME: Uses boom-bap preset (urban, bold typography)
 
-extends: ../templates/band-rap.yaml
+store:
+  name: Lil' Tax Bracket
+  email: merch@liltaxbracket.com
+
+theme:
+  source: spinner
+  settings:
+    preset: boom-bap
+    logo: ../assets/logos/lil-tax-bracket.png
+    logo_width: 220
+    content:
+      hero_heading: "Lil' Tax Bracket"
+      hero_subheading: "Deductions Drop Friday"
+      tagline: "Write It Off"
+    social:
+      instagram: https://instagram.com/liltaxbracket
+      tiktok: https://tiktok.com/@liltaxbracket
+      spotify: https://open.spotify.com/artist/liltaxbracket
+      twitter: https://twitter.com/liltaxbracket
 
 products:
   source: ../products/rap-artist.csv
   create_collections: true
+
+settings:
+  currency: USD
+  timezone: America/New_York
+  shipping:
+    domestic_flat_rate: 7.99
+    free_shipping_threshold: 75

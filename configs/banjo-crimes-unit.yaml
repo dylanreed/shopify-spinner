@@ -1,8 +1,32 @@
 # ABOUTME: Store config for Banjo Crimes Unit (bluegrass band)
-# ABOUTME: Extends bluegrass template with band-specific products
+# ABOUTME: Uses front-porch preset (earthy, warm tones)
 
-extends: ../templates/band-bluegrass.yaml
+store:
+  name: Banjo Crimes Unit
+  email: merch@banjocrimes.com
+
+theme:
+  source: spinner
+  settings:
+    preset: front-porch
+    logo: ../assets/logos/banjo-crimes-unit.png
+    logo_width: 180
+    content:
+      hero_heading: "Banjo Crimes Unit"
+      hero_subheading: "Pickin' & Grinnin' Since 2019"
+      tagline: "Bluegrass with an Alibi"
+    social:
+      instagram: https://instagram.com/banjocrimes
+      spotify: https://open.spotify.com/artist/banjocrimes
+      youtube: https://youtube.com/@banjocrimes
 
 products:
   source: ../products/bluegrass-band.csv
   create_collections: true
+
+settings:
+  currency: USD
+  timezone: America/Chicago
+  shipping:
+    domestic_flat_rate: 5.99
+    free_shipping_threshold: 50

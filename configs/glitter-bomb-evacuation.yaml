@@ -1,8 +1,33 @@
 # ABOUTME: Store config for Glitter Bomb Evacuation (pop band)
-# ABOUTME: Extends pop template with band-specific products
+# ABOUTME: Uses neon-stage preset (bright, energetic)
 
-extends: ../templates/band-pop.yaml
+store:
+  name: Glitter Bomb Evacuation
+  email: merch@glitterbomb.com
+
+theme:
+  source: spinner
+  settings:
+    preset: neon-stage
+    logo: ../assets/logos/glitter-bomb-evacuation.png
+    logo_width: 200
+    content:
+      hero_heading: "Glitter Bomb Evacuation"
+      hero_subheading: "Pop Explosion Tour 2024"
+      tagline: "Sparkle Responsibly"
+    social:
+      instagram: https://instagram.com/glitterbombevac
+      tiktok: https://tiktok.com/@glitterbombevac
+      spotify: https://open.spotify.com/artist/glitterbomb
+      youtube: https://youtube.com/@glitterbombevac
 
 products:
   source: ../products/pop-band.csv
   create_collections: true
+
+settings:
+  currency: USD
+  timezone: America/Los_Angeles
+  shipping:
+    domestic_flat_rate: 6.99
+    free_shipping_threshold: 60
