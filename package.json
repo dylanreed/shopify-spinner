@@ -15,12 +15,19 @@
     "test:watch": "vitest",
     "spinner": "tsx src/index.ts"
   },
-  "keywords": ["shopify", "cli", "automation"],
+  "keywords": [
+    "shopify",
+    "cli",
+    "automation"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@hono/node-server": "^1.19.9",
     "chalk": "^5.6.2",
     "commander": "^14.0.2",
+    "dotenv": "^17.2.3",
+    "hono": "^4.11.4",
     "js-yaml": "^4.1.1",
     "zod": "^4.3.5"
   },
