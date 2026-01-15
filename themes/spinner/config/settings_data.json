@@ -1,0 +1,77 @@
+{
+  "current": "Default",
+  "presets": {
+    "Default": {
+      "layout_style": "standard",
+      "navigation_style": "topbar",
+      "animation_level": "subtle",
+      "font_pairing": "penthouse",
+      "color_palette": "after-midnight",
+      "custom_colors_enabled": false
+    },
+    "Penthouse": {
+      "layout_style": "bold",
+      "navigation_style": "sidebar",
+      "animation_level": "dynamic",
+      "font_pairing": "penthouse",
+      "color_palette": "after-midnight",
+      "custom_colors_enabled": false
+    },
+    "Mosh Pit": {
+      "layout_style": "bold",
+      "navigation_style": "hamburger",
+      "animation_level": "none",
+      "font_pairing": "mosh-pit",
+      "color_palette": "blood-chrome",
+      "custom_colors_enabled": false
+    },
+    "Honky Tonk": {
+      "layout_style": "standard",
+      "navigation_style": "topbar",
+      "animation_level": "subtle",
+      "font_pairing": "honky-tonk",
+      "color_palette": "sawdust",
+      "custom_colors_enabled": false
+    },
+    "Neon Stage": {
+      "layout_style": "editorial",
+      "navigation_style": "topbar",
+      "animation_level": "dynamic",
+      "font_pairing": "neon-stage",
+      "color_palette": "highlighter",
+      "custom_colors_enabled": false
+    },
+    "Front Porch": {
+      "layout_style": "standard",
+      "navigation_style": "topbar",
+      "animation_level": "subtle",
+      "font_pairing": "front-porch",
+      "color_palette": "porch-light",
+      "custom_colors_enabled": false
+    },
+    "Boom Bap": {
+      "layout_style": "editorial",
+      "navigation_style": "hamburger",
+      "animation_level": "subtle",
+      "font_pairing": "boom-bap",
+      "color_palette": "concrete-jungle",
+      "custom_colors_enabled": false
+    },
+    "Garage": {
+      "layout_style": "standard",
+      "navigation_style": "hamburger",
+      "animation_level": "none",
+      "font_pairing": "garage",
+      "color_palette": "xerox-punk",
+      "custom_colors_enabled": false
+    },
+    "Gallery": {
+      "layout_style": "editorial",
+      "navigation_style": "topbar",
+      "animation_level": "subtle",
+      "font_pairing": "gallery",
+      "color_palette": "gallery-white",
+      "custom_colors_enabled": false
+    }
+  }
+}
