@@ -1,0 +1,164 @@
+{% comment %}
+  ABOUTME: Generates CSS custom properties from theme settings
+  ABOUTME: Handles font pairings, color palettes, and overrides
+{% endcomment %}
+
+<style>
+:root {
+  /* Font Pairings */
+  {% case settings.font_pairing %}
+    {% when 'penthouse' %}
+      --font-heading: 'Oswald', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    {% when 'mosh-pit' %}
+      --font-heading: 'Bebas Neue', sans-serif;
+      --font-body: 'Roboto Mono', monospace;
+    {% when 'honky-tonk' %}
+      --font-heading: 'Playfair Display', serif;
+      --font-body: 'Source Sans Pro', sans-serif;
+    {% when 'neon-stage' %}
+      --font-heading: 'Poppins', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    {% when 'front-porch' %}
+      --font-heading: 'Lora', serif;
+      --font-body: 'Open Sans', sans-serif;
+    {% when 'boom-bap' %}
+      --font-heading: 'Archivo Black', sans-serif;
+      --font-body: 'Space Grotesk', sans-serif;
+    {% when 'garage' %}
+      --font-heading: 'Rock Salt', cursive;
+      --font-body: 'Nunito', sans-serif;
+    {% when 'gallery' %}
+      --font-heading: 'Cormorant Garamond', serif;
+      --font-body: 'Montserrat', sans-serif;
+  {% endcase %}
+
+  /* Color Palettes */
+  {% if settings.custom_colors_enabled %}
+    --color-background: {{ settings.custom_background }};
+    --color-text: {{ settings.custom_text }};
+    --color-primary: {{ settings.custom_primary }};
+    --color-secondary: {{ settings.custom_secondary }};
+    --color-accent: {{ settings.custom_accent }};
+  {% else %}
+    {% case settings.color_palette %}
+      {% when 'after-midnight' %}
+        --color-background: #0f0f0f;
+        --color-text: #ffffff;
+        --color-primary: #000000;
+        --color-secondary: #1a1a1a;
+        --color-accent: {% if settings.accent_override != blank %}{{ settings.accent_override }}{% else %}#d4af37{% endif %};
+      {% when 'blood-chrome' %}
+        --color-background: #0a0a0a;
+        --color-text: #e0e0e0;
+        --color-primary: #1a1a1a;
+        --color-secondary: #2d2d2d;
+        --color-accent: {% if settings.accent_override != blank %}{{ settings.accent_override }}{% else %}#8b0000{% endif %};
+      {% when 'sawdust' %}
+        --color-background: #faf6f1;
+        --color-text: #2c2416;
+        --color-primary: #8b7355;
+        --color-secondary: #d4c4a8;
+        --color-accent: {% if settings.accent_override != blank %}{{ settings.accent_override }}{% else %}#c7923e{% endif %};
+      {% when 'highlighter' %}
+        --color-background: #ffffff;
+        --color-text: #1a1a1a;
+        --color-primary: #f5f5f5;
+        --color-secondary: #e0e0e0;
+        --color-accent: {% if settings.accent_override != blank %}{{ settings.accent_override }}{% else %}#ff3366{% endif %};
+      {% when 'porch-light' %}
+        --color-background: #f5f0e6;
+        --color-text: #3d3225;
+        --color-primary: #6b5d4d;
+        --color-secondary: #a69580;
+        --color-accent: {% if settings.accent_override != blank %}{{ settings.accent_override }}{% else %}#7c9a5e{% endif %};
+      {% when 'concrete-jungle' %}
+        --color-background: #1c1c1c;
+        --color-text: #f0f0f0;
+        --color-primary: #2a2a2a;
+        --color-secondary: #404040;
+        --color-accent: {% if settings.accent_override != blank %}{{ settings.accent_override }}{% else %}#00ff88{% endif %};
+      {% when 'xerox-punk' %}
+        --color-background: #ffffff;
+        --color-text: #000000;
+        --color-primary: #000000;
+        --color-secondary: #666666;
+        --color-accent: {% if settings.accent_override != blank %}{{ settings.accent_override }}{% else %}#ff0000{% endif %};
+      {% when 'gallery-white' %}
+        --color-background: #fafafa;
+        --color-text: #1a1a1a;
+        --color-primary: #ffffff;
+        --color-secondary: #f0f0f0;
+        --color-accent: {% if settings.accent_override != blank %}{{ settings.accent_override }}{% else %}#0066cc{% endif %};
+    {% endcase %}
+  {% endif %}
+
+  /* Spacing */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 2rem;
+  --space-xl: 4rem;
+
+  /* Border Radius */
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --radius-lg: 8px;
+
+  /* Animation */
+  {% case settings.animation_level %}
+    {% when 'none' %}
+      --transition-speed: 0ms;
+      --animation-enabled: 0;
+    {% when 'subtle' %}
+      --transition-speed: 200ms;
+      --animation-enabled: 1;
+    {% when 'dynamic' %}
+      --transition-speed: 300ms;
+      --animation-enabled: 1;
+  {% endcase %}
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --transition-speed: 0ms;
+    --animation-enabled: 0;
+  }
+}
+</style>
+
+{% comment %} Google Fonts links based on font pairing {% endcomment %}
+{% case settings.font_pairing %}
+  {% when 'penthouse' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Oswald:wght@400;500;600;700&display=swap" rel="stylesheet">
+  {% when 'mosh-pit' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  {% when 'honky-tonk' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Source+Sans+Pro:wght@400;600&display=swap" rel="stylesheet">
+  {% when 'neon-stage' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  {% when 'front-porch' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  {% when 'boom-bap' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  {% when 'garage' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Rock+Salt&display=swap" rel="stylesheet">
+  {% when 'gallery' %}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+{% endcase %}
