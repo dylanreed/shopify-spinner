@@ -115,6 +115,7 @@ export class ThemeBuilder {
           {
             filename: 'config/settings_data.json',
             body: {
+              type: 'JSON',
               value: JSON.stringify(settingsData, null, 2),
             },
           },
