@@ -1,0 +1,147 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Spinner",
+    "theme_version": "1.0.0",
+    "theme_author": "Spinner CLI",
+    "theme_documentation_url": "",
+    "theme_support_url": ""
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "select",
+        "id": "layout_style",
+        "label": "Layout Style",
+        "options": [
+          { "value": "standard", "label": "Standard (centered)" },
+          { "value": "editorial", "label": "Editorial (asymmetric)" },
+          { "value": "bold", "label": "Bold (full-bleed, sidebar)" }
+        ],
+        "default": "standard"
+      },
+      {
+        "type": "select",
+        "id": "navigation_style",
+        "label": "Navigation Style",
+        "options": [
+          { "value": "topbar", "label": "Top Bar" },
+          { "value": "hamburger", "label": "Hamburger Menu" },
+          { "value": "sidebar", "label": "Sidebar" }
+        ],
+        "default": "topbar"
+      },
+      {
+        "type": "select",
+        "id": "animation_level",
+        "label": "Animation Level",
+        "options": [
+          { "value": "none", "label": "None" },
+          { "value": "subtle", "label": "Subtle" },
+          { "value": "dynamic", "label": "Dynamic" }
+        ],
+        "default": "subtle"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "select",
+        "id": "font_pairing",
+        "label": "Font Pairing",
+        "options": [
+          { "value": "penthouse", "label": "Penthouse (Oswald / Inter)" },
+          { "value": "mosh-pit", "label": "Mosh Pit (Bebas Neue / Roboto Mono)" },
+          { "value": "honky-tonk", "label": "Honky Tonk (Playfair / Source Sans)" },
+          { "value": "neon-stage", "label": "Neon Stage (Poppins / Inter)" },
+          { "value": "front-porch", "label": "Front Porch (Lora / Open Sans)" },
+          { "value": "boom-bap", "label": "Boom Bap (Archivo Black / Space Grotesk)" },
+          { "value": "garage", "label": "Garage Band (Rock Salt / Nunito)" },
+          { "value": "gallery", "label": "Gallery (Cormorant / Montserrat)" }
+        ],
+        "default": "penthouse"
+      }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "select",
+        "id": "color_palette",
+        "label": "Color Palette",
+        "options": [
+          { "value": "after-midnight", "label": "After Midnight (dark + gold)" },
+          { "value": "blood-chrome", "label": "Blood & Chrome (black + red)" },
+          { "value": "sawdust", "label": "Sawdust (cream + brown)" },
+          { "value": "highlighter", "label": "Highlighter (white + bright)" },
+          { "value": "porch-light", "label": "Porch Light (earth tones)" },
+          { "value": "concrete-jungle", "label": "Concrete Jungle (dark + neon)" },
+          { "value": "xerox-punk", "label": "Xerox Punk (black + white + red)" },
+          { "value": "gallery-white", "label": "Gallery White (minimal + blue)" }
+        ],
+        "default": "after-midnight"
+      },
+      {
+        "type": "color",
+        "id": "accent_override",
+        "label": "Accent Color Override",
+        "info": "Leave blank to use palette default"
+      },
+      {
+        "type": "checkbox",
+        "id": "custom_colors_enabled",
+        "label": "Enable Full Custom Colors (White Glove)",
+        "default": false
+      },
+      {
+        "type": "color",
+        "id": "custom_background",
+        "label": "Custom Background"
+      },
+      {
+        "type": "color",
+        "id": "custom_text",
+        "label": "Custom Text"
+      },
+      {
+        "type": "color",
+        "id": "custom_primary",
+        "label": "Custom Primary"
+      },
+      {
+        "type": "color",
+        "id": "custom_secondary",
+        "label": "Custom Secondary"
+      },
+      {
+        "type": "color",
+        "id": "custom_accent",
+        "label": "Custom Accent"
+      }
+    ]
+  },
+  {
+    "name": "Logo",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo"
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "label": "Logo Width",
+        "min": 50,
+        "max": 300,
+        "step": 10,
+        "default": 150,
+        "unit": "px"
+      }
+    ]
+  }
+]
