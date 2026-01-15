@@ -9,6 +9,7 @@ import { ProductBuilder } from '../../builders/products.js';
 import { CollectionBuilder } from '../../builders/collections.js';
 import { ThemeBuilder } from '../../builders/theme.js';
 import { StateManager } from '../../state/manager.js';
+import { TokenStore } from '../../auth/token-store.js';
 import { resolve, dirname } from 'path';
 import { homedir } from 'os';
 
@@ -26,18 +27,35 @@ export async function createCommand(options: CreateOptions): Promise<void> {
 
   console.log(chalk.blue(`Creating store: ${config.store.name}`));
 
-  // For MVP, require access token and shop domain
-  // Later: integrate with Partner API for store creation
-  if (!options.accessToken || !options.shopDomain) {
-    console.log(chalk.yellow('\nMVP Mode: Store must already exist.'));
-    console.log(chalk.yellow('Provide --access-token and --shop-domain for an existing dev store.\n'));
-    console.log(chalk.gray('Future: Partner API integration will create stores automatically.'));
+  // Get credentials - either from flags or stored tokens
+  let accessToken = options.accessToken;
+  let shopDomain = options.shopDomain;
+
+  if (shopDomain && !accessToken) {
+    // Try to get token from store
+    const tokenStore = new TokenStore(resolve(homedir(), '.spinner', 'tokens.json'));
+    const storedToken = tokenStore.getToken(shopDomain);
+
+    if (storedToken) {
+      accessToken = storedToken.accessToken;
+      console.log(chalk.gray(`Using stored token for ${shopDomain}`));
+    }
+  }
+
+  if (!accessToken || !shopDomain) {
+    console.log(chalk.yellow('\nNo credentials found.'));
+    console.log(chalk.white('Option 1: Install app via OAuth'));
+    console.log(chalk.gray('  1. Add shop to whitelist: spinner whitelist add <shop>'));
+    console.log(chalk.gray('  2. Start OAuth server: spinner serve'));
+    console.log(chalk.gray('  3. Visit: http://localhost:3000/auth?shop=<shop>'));
+    console.log(chalk.white('\nOption 2: Provide credentials directly'));
+    console.log(chalk.gray('  spinner create --config <config> --shop <shop> --access-token <token>'));
     return;
   }
 
   const client = new ShopifyClient({
-    accessToken: options.accessToken,
-    shopDomain: options.shopDomain,
+    accessToken: accessToken,
+    shopDomain: shopDomain,
   });
 
   // Initialize state
@@ -52,8 +70,8 @@ export async function createCommand(options: CreateOptions): Promise<void> {
   }
 
   // Persist shopDomain to state
-  if (options.shopDomain) {
-    state.shopDomain = options.shopDomain;
+  if (shopDomain) {
+    state.shopDomain = shopDomain;
     stateManager.saveState(storeName, state);
   }
 
@@ -143,6 +161,6 @@ export async function createCommand(options: CreateOptions): Promise<void> {
   // Summary
   console.log('\n' + chalk.blue('─'.repeat(50)));
   console.log(chalk.green(`Store configured: ${config.store.name}`));
-  console.log(chalk.gray(`Shop: https://${options.shopDomain}`));
-  console.log(chalk.gray(`Admin: https://${options.shopDomain}/admin`));
+  console.log(chalk.gray(`Shop: https://${shopDomain}`));
+  console.log(chalk.gray(`Admin: https://${shopDomain}/admin`));
 }
