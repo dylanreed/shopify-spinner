@@ -108,6 +108,7 @@ themeCmd
   .command('push')
   .description('Push theme to a Shopify store (uses Shopify CLI)')
   .requiredOption('-s, --shop <domain>', 'Shop domain (e.g., store.myshopify.com)')
+  .option('-c, --config <path>', 'Config file to customize theme before pushing')
   .option('-p, --path <path>', 'Path to theme directory', './themes/spinner')
   .option('--unpublished', 'Push as unpublished theme')
   .action(async (options) => {

@@ -1,8 +1,47 @@
 # ABOUTME: Store config for Pit Viper Funeral (metal band)
-# ABOUTME: Extends metal template with band-specific products
+# ABOUTME: Uses mosh-pit preset with custom content
 
-extends: ../templates/band-metal.yaml
+store:
+  name: Pit Viper Funeral
+  email: merch@pitviperfuneral.com
+
+theme:
+  source: spinner
+  settings:
+    # Use the mosh-pit preset (Bebas Neue / Roboto Mono, blood-chrome colors)
+    preset: mosh-pit
+
+    # Override with band's brand color
+    accent_override: "#8b0000"
+
+    # Logo settings
+    logo: ../assets/logos/pit-viper-funeral.png
+    logo_width: 200
+    extract_colors_from_logo: false  # Set true to auto-generate palette from logo
+
+    # Homepage content
+    content:
+      hero_heading: "Pit Viper Funeral"
+      hero_subheading: "Official Merch - Death Never Looked So Good"
+      hero_button_text: "Shop Now"
+      tagline: "Wear Your Darkness"
+
+    # Social links for footer
+    social:
+      instagram: https://instagram.com/pitviperfuneral
+      spotify: https://open.spotify.com/artist/pitviperfuneral
+      youtube: https://youtube.com/@pitviperfuneral
 
 products:
   source: ../products/metal-band.csv
   create_collections: true
+
+settings:
+  currency: USD
+  timezone: America/Los_Angeles
+  checkout:
+    require_phone: false
+    enable_tips: false
+  shipping:
+    domestic_flat_rate: 7.99
+    free_shipping_threshold: 75

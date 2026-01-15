@@ -1,49 +1,111 @@
 // ABOUTME: CLI command to push themes via Shopify CLI.
-// ABOUTME: Wraps shopify theme push with spinner's store context.
+// ABOUTME: Supports customization from config before pushing.
 
 import chalk from 'chalk';
 import { spawn } from 'child_process';
-import { existsSync } from 'fs';
-import { resolve } from 'path';
+import { existsSync, mkdirSync, rmSync } from 'fs';
+import { resolve, join } from 'path';
+import { tmpdir } from 'os';
+import { parseConfigFile } from '../../config/parser.js';
+import { customizeTheme } from '../../theme/customizer.js';
 
 interface ThemePushOptions {
   shop: string;
   path?: string;
+  config?: string;
   unpublished?: boolean;
 }
 
 function runShopifyCli(args: string[]): Promise<number> {
-  return new Promise((resolve) => {
+  return new Promise((resolvePromise) => {
     const child = spawn('shopify', args, {
       stdio: 'inherit',
       shell: true,
     });
 
     child.on('close', (code) => {
-      resolve(code ?? 1);
+      resolvePromise(code ?? 1);
     });
 
     child.on('error', (err) => {
       console.error(chalk.red(`Failed to run Shopify CLI: ${err.message}`));
       console.log(chalk.yellow('Make sure Shopify CLI is installed: npm install -g @shopify/cli'));
-      resolve(1);
+      resolvePromise(1);
     });
   });
 }
 
 export async function themePushCommand(options: ThemePushOptions): Promise<void> {
-  const themePath = options.path ?? './themes/spinner';
-  const resolvedPath = resolve(themePath);
+  const baseThemePath = options.path ?? './themes/spinner';
+  const resolvedBasePath = resolve(baseThemePath);
 
-  if (!existsSync(resolvedPath)) {
-    console.error(chalk.red(`Theme path does not exist: ${resolvedPath}`));
+  if (!existsSync(resolvedBasePath)) {
+    console.error(chalk.red(`Theme path does not exist: ${resolvedBasePath}`));
     process.exit(1);
   }
 
-  console.log(chalk.blue(`Pushing theme to ${options.shop}...`));
-  console.log(chalk.gray(`Theme path: ${resolvedPath}`));
+  let themePath = resolvedBasePath;
+  let tempDir: string | null = null;
 
-  const args = ['theme', 'push', '--store', options.shop, '--path', resolvedPath];
+  // If config provided, customize the theme first
+  if (options.config) {
+    const configPath = resolve(options.config);
+
+    if (!existsSync(configPath)) {
+      console.error(chalk.red(`Config file does not exist: ${configPath}`));
+      process.exit(1);
+    }
+
+    console.log(chalk.blue('Loading config and customizing theme...'));
+
+    try {
+      const config = await parseConfigFile(configPath);
+
+      // Create temp directory for customized theme
+      tempDir = join(tmpdir(), `spinner-theme-${Date.now()}`);
+      mkdirSync(tempDir, { recursive: true });
+
+      await customizeTheme({
+        configPath,
+        config,
+        themePath: resolvedBasePath,
+        outputPath: tempDir,
+      });
+
+      themePath = tempDir;
+
+      // Log what was applied
+      const settings = config.theme?.settings;
+      if (settings?.preset) {
+        console.log(chalk.gray(`  Preset: ${settings.preset}`));
+      }
+      if (settings?.extract_colors_from_logo && settings?.logo) {
+        console.log(chalk.gray(`  Extracted colors from: ${settings.logo}`));
+      }
+      if (settings?.content?.hero_heading) {
+        console.log(chalk.gray(`  Hero: "${settings.content.hero_heading}"`));
+      }
+      if (settings?.social) {
+        const socialCount = Object.values(settings.social).filter(Boolean).length;
+        if (socialCount > 0) {
+          console.log(chalk.gray(`  Social links: ${socialCount} configured`));
+        }
+      }
+
+      console.log(chalk.green('✓ Theme customized'));
+    } catch (error) {
+      console.error(chalk.red(`Failed to customize theme: ${(error as Error).message}`));
+      if (tempDir && existsSync(tempDir)) {
+        rmSync(tempDir, { recursive: true, force: true });
+      }
+      process.exit(1);
+    }
+  }
+
+  console.log(chalk.blue(`Pushing theme to ${options.shop}...`));
+  console.log(chalk.gray(`Theme path: ${themePath}`));
+
+  const args = ['theme', 'push', '--store', options.shop, '--path', themePath];
 
   if (options.unpublished) {
     args.push('--unpublished');
@@ -54,6 +116,11 @@ export async function themePushCommand(options: ThemePushOptions): Promise<void>
   args.push('--allow-live');
 
   const exitCode = await runShopifyCli(args);
+
+  // Clean up temp directory
+  if (tempDir && existsSync(tempDir)) {
+    rmSync(tempDir, { recursive: true, force: true });
+  }
 
   if (exitCode === 0) {
     console.log(chalk.green('\n✓ Theme pushed successfully'));
