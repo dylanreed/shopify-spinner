@@ -1,0 +1,136 @@
+{% comment %}
+  ABOUTME: Collection products grid section
+  ABOUTME: Supports filtering, sorting, and pagination
+{% endcomment %}
+
+{% liquid
+  assign grid_style = section.settings.grid_style
+  assign products_per_page = section.settings.products_per_page
+%}
+
+<section class="collection-products section">
+  <div class="container">
+    <div class="collection-products__header">
+      <div class="collection-products__sort">
+        <label for="sort-by" class="visually-hidden">Sort by</label>
+        <select id="sort-by" class="collection-products__sort-select" onchange="window.location.href = this.value">
+          {% for option in collection.sort_options %}
+            <option value="{{ option.url }}" {% if option.value == collection.sort_by %}selected{% endif %}>
+              {{ option.name }}
+            </option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+
+    {% paginate collection.products by products_per_page %}
+      {% if collection.products.size > 0 %}
+        <div class="product-grid product-grid-{{ grid_style }}">
+          {% for product in collection.products %}
+            {% render 'product-card', product: product %}
+          {% endfor %}
+        </div>
+
+        {% if paginate.pages > 1 %}
+          <nav class="pagination" aria-label="Pagination">
+            {% if paginate.previous %}
+              <a href="{{ paginate.previous.url }}" class="pagination__link pagination__link--prev">
+                &larr; Previous
+              </a>
+            {% endif %}
+
+            <span class="pagination__current">
+              Page {{ paginate.current_page }} of {{ paginate.pages }}
+            </span>
+
+            {% if paginate.next %}
+              <a href="{{ paginate.next.url }}" class="pagination__link pagination__link--next">
+                Next &rarr;
+              </a>
+            {% endif %}
+          </nav>
+        {% endif %}
+      {% else %}
+        <div class="collection-products__empty">
+          <p>No products found in this collection.</p>
+          <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary">Browse all products</a>
+        </div>
+      {% endif %}
+    {% endpaginate %}
+  </div>
+</section>
+
+<style>
+.collection-products__header {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: var(--space-lg);
+}
+
+.collection-products__sort-select {
+  min-width: 200px;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-lg);
+  margin-top: var(--space-xl);
+  padding-top: var(--space-lg);
+  border-top: 1px solid var(--color-secondary);
+}
+
+.pagination__link {
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--transition-speed) ease;
+}
+
+.pagination__link:hover {
+  color: var(--color-accent);
+}
+
+.pagination__current {
+  color: var(--color-text);
+  opacity: 0.7;
+}
+
+.collection-products__empty {
+  text-align: center;
+  padding: var(--space-xl);
+}
+
+.collection-products__empty p {
+  margin-bottom: var(--space-lg);
+}
+</style>
+
+{% schema %}
+{
+  "name": "Collection Products",
+  "settings": [
+    {
+      "type": "select",
+      "id": "grid_style",
+      "label": "Grid Style",
+      "options": [
+        { "value": "classic", "label": "Classic" },
+        { "value": "masonry", "label": "Masonry" },
+        { "value": "featured", "label": "Featured First" }
+      ],
+      "default": "classic"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per Page",
+      "min": 8,
+      "max": 24,
+      "step": 4,
+      "default": 12
+    }
+  ]
+}
+{% endschema %}
