@@ -1,0 +1,177 @@
+{% comment %}
+  ABOUTME: Reusable product card component
+  ABOUTME: Used in collection grids and featured products
+
+  Accepts:
+  - product: Shopify product object (required)
+  - show_vendor: boolean to show vendor name (optional)
+{% endcomment %}
+
+{% liquid
+  assign show_vendor = show_vendor | default: false
+  assign current_variant = product.selected_or_first_available_variant
+  assign compare_at_price = current_variant.compare_at_price
+  assign price = current_variant.price
+  assign on_sale = false
+  if compare_at_price > price
+    assign on_sale = true
+  endif
+%}
+
+<article class="product-card">
+  <a href="{{ product.url }}" class="product-card__link">
+    <div class="product-card__image">
+      {% if product.featured_image != blank %}
+        <img
+          src="{{ product.featured_image | image_url: width: 600 }}"
+          alt="{{ product.featured_image.alt | default: product.title }}"
+          loading="lazy"
+          width="600"
+          height="{{ 600 | divided_by: product.featured_image.aspect_ratio | round }}"
+        >
+        {% if product.images[1] != blank %}
+          <img
+            src="{{ product.images[1] | image_url: width: 600 }}"
+            alt="{{ product.images[1].alt | default: product.title }}"
+            loading="lazy"
+            width="600"
+            height="{{ 600 | divided_by: product.images[1].aspect_ratio | round }}"
+            class="product-card__image-hover"
+          >
+        {% endif %}
+      {% else %}
+        <div class="product-card__placeholder"></div>
+      {% endif %}
+
+      {% if on_sale %}
+        <span class="product-card__badge product-card__badge--sale">Sale</span>
+      {% endif %}
+
+      {% unless product.available %}
+        <span class="product-card__badge product-card__badge--sold-out">Sold Out</span>
+      {% endunless %}
+    </div>
+
+    <div class="product-card__info">
+      {% if show_vendor and product.vendor != blank %}
+        <p class="product-card__vendor">{{ product.vendor }}</p>
+      {% endif %}
+
+      <h3 class="product-card__title">{{ product.title }}</h3>
+
+      <div class="product-card__price">
+        {% if on_sale %}
+          <span class="product-card__price--compare">{{ compare_at_price | money }}</span>
+        {% endif %}
+        <span class="product-card__price--current {% if on_sale %}product-card__price--sale{% endif %}">
+          {{ price | money }}
+        </span>
+      </div>
+    </div>
+  </a>
+</article>
+
+<style>
+.product-card__link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.product-card__image {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1;
+  background: var(--color-secondary);
+  border-radius: var(--radius-md);
+}
+
+.product-card__image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity var(--transition-speed) ease, transform var(--transition-speed) ease;
+}
+
+.product-card__image-hover {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.product-card:hover .product-card__image img:first-child {
+  transform: scale(1.05);
+}
+
+.product-card:hover .product-card__image-hover {
+  opacity: 1;
+}
+
+.product-card__placeholder {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, var(--color-secondary) 0%, var(--color-primary) 100%);
+}
+
+.product-card__badge {
+  position: absolute;
+  top: var(--space-sm);
+  left: var(--space-sm);
+  padding: var(--space-xs) var(--space-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+}
+
+.product-card__badge--sale {
+  background: var(--color-accent);
+  color: var(--color-background);
+}
+
+.product-card__badge--sold-out {
+  background: var(--color-text);
+  color: var(--color-background);
+}
+
+.product-card__info {
+  padding: var(--space-md) 0;
+}
+
+.product-card__vendor {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text);
+  opacity: 0.6;
+  margin-bottom: var(--space-xs);
+}
+
+.product-card__title {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  margin-bottom: var(--space-xs);
+  color: var(--color-text);
+}
+
+.product-card__price {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.product-card__price--current {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.product-card__price--sale {
+  color: var(--color-accent);
+}
+
+.product-card__price--compare {
+  text-decoration: line-through;
+  opacity: 0.6;
+  font-size: 0.9rem;
+}
+</style>
